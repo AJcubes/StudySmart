@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Netlify Blobs Connector</title>
+</head>
+<body>
+
+<div id="auth-section">
+    <h3>Sign Up / Sign In</h3>
+    <form id="user-form">
+        <div>
+            <label>Email: </label>
+            <input type="email" id="email-input" required>
+        </div>
+        <br>
+        <div>
+            <label>URL: </label>
+            <input type="url" id="url-input" placeholder="https://example.com">
+        </div>
+        <br>
+        <button type="submit" id="save-btn">Save</button>
+    </form>
+</div>
+
+<div id="welcome-section" style="display:none;">
+    <h3>Welcome, <span id="user-email-display"></span></h3>
+    <p>Saved URL: <a id="user-url-link" href="#" target="_blank"></a></p>
+    <button id="signout-btn">Sign Out</button>
+</div>
+
+<hr>
+
+<div>
+    <h3>Fetched Content Result:</h3>
+    <pre id="result-box">No data fetched yet.</pre>
+</div>
+
+<!-- Separate JavaScript file linked here -->
+<script src="script.js"></script>
+</body>
+</html>
