@@ -1,10 +1,16 @@
 import { getStore } from "@netlify/blobs";
 
 export default async (req) => {
+    // Check if this execution is triggered by Netlify's Scheduled Cron Job
+    // Scheduled function invocations come as standard background requests without regular UI paths
     const url = new URL(req.url);
     const path = url.pathname.split("/").pop();
 
-    // Handle CORS preflight
+    if (req.headers.get("x-netlify-scheduled") === "true" || path === "daily-email") {
+        return await handleDailyEmailCron();
+    }
+
+    // Handle CORS preflight for standard browser requests
     if (req.method === "OPTIONS") {
         return new Response("OK", {
             headers: {
@@ -22,7 +28,7 @@ export default async (req) => {
 
         // 1. SAVE Endpoint
         if (req.method === "POST" && path === "save") {
-            const { email, targetUrl } = await req.json();
+            const { email, targetUrl, emailChecked } = await req.json();
             if (!email || !targetUrl) {
                 return new Response(JSON.stringify({ error: "Missing email or url" }), {
                     status: 400,
@@ -30,9 +36,13 @@ export default async (req) => {
                 });
             }
 
-            // Clean email to use as a valid blob key
             const key = email.toLowerCase().replace(/[^a-z0-9]/g, "_");
-            await store.setJSON(key, { email, targetUrl, updatedAt: new Date().toISOString() });
+            await store.setJSON(key, {
+                email,
+                targetUrl,
+                emailChecked: Boolean(emailChecked),
+                updatedAt: new Date().toISOString()
+            });
 
             return new Response(JSON.stringify({ success: true, key }), {
                 status: 200,
@@ -45,7 +55,6 @@ export default async (req) => {
             const targetUrl = url.searchParams.get("url");
             const email = url.searchParams.get("email");
 
-            // If email is passed instead of URL, load URL from Netlify Blobs first
             let finalTargetUrl = targetUrl;
             if (!finalTargetUrl && email) {
                 const key = email.toLowerCase().replace(/[^a-z0-9]/g, "_");
@@ -62,7 +71,6 @@ export default async (req) => {
                 });
             }
 
-            // Fetch target URL server-side (following redirects automatically)
             const externalRes = await fetch(finalTargetUrl, { redirect: "follow" });
             const textResponse = await externalRes.text();
 
@@ -92,6 +100,66 @@ export default async (req) => {
     }
 };
 
+// Background routine to send daily emails via Brevo
+async function handleDailyEmailCron() {
+    try {
+        const store = getStore("user-configs");
+        const { blobs } = await store.list();
+
+        if (!blobs || blobs.length === 0) {
+            console.log("No users found in blob store.");
+            return new Response("No users found");
+        }
+
+        for (const blob of blobs) {
+            const userData = await store.get(blob.key, { type: "json" });
+
+            if (!userData || !userData.targetUrl || userData.emailChecked !== true) {
+                continue;
+            }
+
+            try {
+                // Fetch target URL following redirects
+                const externalRes = await fetch(userData.targetUrl, { redirect: "follow" });
+                const textResponse = await externalRes.text();
+
+                // Send email securely using Brevo API key from Netlify Environment Variables
+                const emailRes = await fetch("https://api.brevo.com/v3/smtp/email", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                        "api-key": process.env.BREVO_API_KEY
+                    },
+                    body: JSON.stringify({
+                        sender: {
+                            name: "Blob URL Notifier",
+                            email: userData.email
+                        },
+                        to: [{ email: userData.email }],
+                        subject: "Your Daily URL Fetch Result",
+                        textContent: `Here is the latest fetched content for your URL (${userData.targetUrl}):\n\n${textResponse.substring(0, 4000)}`
+                    })
+                });
+
+                if (!emailRes.ok) {
+                    console.error(`Failed to send email via Brevo to ${userData.email}:`, await emailRes.text());
+                } else {
+                    console.log(`Successfully sent daily update email to ${userData.email}`);
+                }
+            } catch (innerErr) {
+                console.error(`Error processing user ${userData.email}:`, innerErr.message);
+            }
+        }
+        return new Response("Cron executed successfully");
+    } catch (err) {
+        console.error("Cron execution error:", err.message);
+        return new Response("Cron failed", { status: 500 });
+    }
+}
+
+// Config for wildcard routing + Netlify Daily Cron trigger at 7:00 PM UTC
 export const config = {
     path: "/api/*",
+    schedule: "0 19 * * *"
 };

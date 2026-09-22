@@ -19,6 +19,12 @@
             <input type="url" id="url-input" placeholder="https://example.com/feed.ics">
         </div>
         <br>
+        <div>
+            <label>
+                <input type="checkbox" id="email-checkbox"> Email Enabled
+            </label>
+        </div>
+        <br>
         <button type="submit">Save & Continue</button>
     </form>
 </div>
@@ -26,6 +32,7 @@
 <div id="dashboard-section" style="display:none;">
     <h2 id="welcome-msg"></h2>
     <p><strong>Saved URL:</strong> <span id="display-url"></span></p>
+    <p><strong>Email Option:</strong> <span id="display-checkbox-status"></span></p>
     <button id="sign-out-btn">Sign Out</button>
 
     <h3>Fetched Content Result:</h3>
