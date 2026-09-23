@@ -1,13 +1,14 @@
+import { schedule } from "@netlify/functions";
 import { getStore } from "@netlify/blobs";
 
-export default async (req) => {
+const dailyEmailHandler = async (event, context) => {
     try {
         const store = getStore("user-configs");
         const { blobs } = await store.list();
 
         if (!blobs || blobs.length === 0) {
             console.log("No users found in blob store.");
-            return;
+            return { statusCode: 200, body: "No users found" };
         }
 
         for (const blob of blobs) {
@@ -22,7 +23,7 @@ export default async (req) => {
                 const externalRes = await fetch(userData.targetUrl, { redirect: "follow" });
                 const textResponse = await externalRes.text();
 
-                // Send email using Brevo API key from Netlify Environment Variables
+                // Send email using Brevo API key and sender email from Netlify Environment Variables
                 const emailRes = await fetch("https://api.brevo.com/v3/smtp/email", {
                     method: "POST",
                     headers: {
@@ -33,7 +34,7 @@ export default async (req) => {
                     body: JSON.stringify({
                         sender: {
                             name: "Blob URL Notifier",
-                            email: userData.email
+                            email: process.env.BREVO_SENDER_EMAIL
                         },
                         to: [{ email: userData.email }],
                         subject: "Your Daily URL Fetch Result",
@@ -50,12 +51,13 @@ export default async (req) => {
                 console.error(`Error processing user ${userData.email}:`, innerErr.message);
             }
         }
+
+        return { statusCode: 200, body: "Cron executed successfully" };
     } catch (err) {
         console.error("Cron execution error:", err.message);
+        return { statusCode: 500, body: "Cron failed" };
     }
 };
 
-// Netlify scheduled trigger: Runs every day at 19:00 UTC (7:00 PM UTC)
-export const config = {
-    schedule: "0 19 * * *"
-};
+// Runs every day at 4:30 AM UTC (12:30 PM HKT)
+export const handler = schedule("30 4 * * *", dailyEmailHandler);
