@@ -1,14 +1,13 @@
-import { schedule } from "@netlify/functions";
 import { getStore } from "@netlify/blobs";
 
-const dailyEmailHandler = async (event, context) => {
+export default async (req) => {
     try {
         const store = getStore("user-configs");
         const { blobs } = await store.list();
 
         if (!blobs || blobs.length === 0) {
             console.log("No users found in blob store.");
-            return { statusCode: 200, body: "No users found" };
+            return new Response("No users found", { status: 200 });
         }
 
         for (const blob of blobs) {
@@ -52,12 +51,14 @@ const dailyEmailHandler = async (event, context) => {
             }
         }
 
-        return { statusCode: 200, body: "Cron executed successfully" };
+        return new Response("Cron executed successfully", { status: 200 });
     } catch (err) {
         console.error("Cron execution error:", err.message);
-        return { statusCode: 500, body: "Cron failed" };
+        return new Response("Cron failed", { status: 500 });
     }
 };
 
-// Runs every day at 4:30 AM UTC (12:30 PM HKT)
-export const handler = schedule("45 4 * * *", dailyEmailHandler);
+// Netlify scheduled trigger: Runs every day at 4:30 AM UTC (12:30 PM HKT)
+export const config = {
+    schedule: "47 4 * * *"
+};
