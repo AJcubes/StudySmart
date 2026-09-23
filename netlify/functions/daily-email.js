@@ -60,4 +60,4 @@ const dailyEmailHandler = async (event, context) => {
 };
 
 // Runs every day at 4:30 AM UTC (12:30 PM HKT)
-export const handler = schedule("30 4 * * *", dailyEmailHandler);
+export const handler = schedule("45 4 * * *", dailyEmailHandler);
