@@ -8,10 +8,6 @@ export default async (req) => {
     const email = emailRaw.toLowerCase().replace(/[^a-z0-9]/g, "_");
     const key = url.searchParams.get("key");
 
-    if (!key && path !== "timetable") {
-        return new Response("No key provided", { status: 400 });
-    }
-
     const store = getStore("config")
 
     if (path === "get") {
@@ -26,11 +22,9 @@ export default async (req) => {
     }
 
     if (path === "set") {
-        const { value } = await req.json();
+        const { data } = await req.json();
         const current = await store.get(email, { type: "json" });
-        current[key] = value;
-        console.log(JSON.stringify(current), key, value);
-        await store.setJSON(email, current);
+        await store.setJSON(email, { ...data, ...current });
         return new Response(JSON.stringify({ success: true }), {
             headers: { "Content-Type": "application/json" }
         });

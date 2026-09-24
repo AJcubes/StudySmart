@@ -16,11 +16,11 @@ const cloudStorage = {
         return data.value;
     },
 
-    async setItem(currentUser, key, value) {
-        const response = await fetch(`/api/set?email=${encodeURIComponent(currentUser)}&key=${encodeURIComponent(key)}`, {
+    async setItems(currentUser, data) {
+        const response = await fetch(`/api/set?email=${encodeURIComponent(currentUser)}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ value })
+            body: JSON.stringify(data)
         });
         return response.json();
     }
@@ -53,8 +53,7 @@ updateDetails.addEventListener("submit", async function (event) {
     const receiveEmailInput = receiveEmails.checked === true;
 
     localStorage.setItem("email", emailInput);
-    await cloudStorage.setItem(emailInput, "receive_emails", receiveEmailInput);
-    await cloudStorage.setItem(emailInput, "url", calendarURLInput);
+    await cloudStorage.setItems(emailInput, { "url": calendarURLInput, "receive_emails": receiveEmailInput });
 
     await showDashboard();
 });
