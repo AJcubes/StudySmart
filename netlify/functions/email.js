@@ -27,13 +27,13 @@ export default async (req) => {
             },
             body: JSON.stringify({
                 sender: {
-                    name: "StudySense",
+                    name: "StudySmart",
                     email: process.env.BREVO_SENDER_EMAIL
                 },
                 to: [{ email: userData["email"] }],
                 subject: "StudySense - To-Do",
                 htmlContent: `
-                    <h1>StudySense</h1>
+                    <h1>StudySmart</h1>
                     <h3>To-Do:</h3>
                     ${emailContent}
                 `
@@ -45,5 +45,5 @@ export default async (req) => {
 }
 
 export const config = {
-    schedule: "10 7 * * *"
+    schedule: "30 7 * * *"
 };
