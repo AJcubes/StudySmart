@@ -7,7 +7,7 @@ export default async (req) => {
     const email = url.searchParams.get("email").toLowerCase().replace(/[^a-z0-9]/g, "_");
     const key = url.searchParams.get("key");
 
-    if (!key) {
+    if (!key && path !== "timetable") {
         return new Response("No key provided", { status: 400 });
     }
 

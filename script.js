@@ -76,8 +76,8 @@ async function showDashboard() {
     auth.style.display = "none";
     dashboard.style.display = "block";
 
-    calendarURL.textContent = cloudStorage.getItem(currentUser, "url") || "";
-    receiveEmails.checked = cloudStorage.getItem(currentUser, "receive_emails") || false;
+    calendarURL.textContent = await cloudStorage.getItem(currentUser, "url") || "";
+    receiveEmails.checked = await cloudStorage.getItem(currentUser, "receive_emails") === true || false;
 
     const response = await fetch(`/api/timetable?email=${encodeURIComponent(currentUser)}`);
     const data = await response.json();
