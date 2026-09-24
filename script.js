@@ -56,11 +56,7 @@ updateDetails.addEventListener("submit", async function (event) {
     localStorage.setItem("email", emailInput);
     await cloudStorage.setItems(emailInput, { "url": calendarURLInput, "receive_emails": receiveEmailInput });
 
-    const response = await fetch(`/api/timetable?email=${encodeURIComponent(emailInput)}`);
-    const data = await response.json();
-    toDo.innerHTML = data["content"];
-
-    // await showDashboard();
+    await showDashboard();
 });
 
 signOut.addEventListener("click", function (event) {
