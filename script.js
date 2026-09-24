@@ -37,7 +37,7 @@ async function init() {
 authForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const emailInput = email.value.trim();
+    const emailInput = emailUpdate.value.trim();
     if (!emailInput) return;
 
     localStorage.setItem("email", emailInput);
@@ -50,7 +50,7 @@ updateDetails.addEventListener("submit", async function (event) {
 
     const emailInput = emailUpdate.value.trim() || "";
     const calendarURLInput = calendarURL.value.trim() || "";
-    const receiveEmailInput = emailUpdate.checked === true;
+    const receiveEmailInput = receiveEmails.checked === true;
 
     localStorage.setItem("email", emailInput);
     console.log(calendarURLInput, receiveEmailInput, calendarURL, emailUpdate, calendarURL.value, emailUpdate.checked);
@@ -78,7 +78,7 @@ async function showDashboard() {
     auth.style.display = "none";
     dashboard.style.display = "block";
 
-    email.value = currentUser;
+    emailUpdate.value = currentUser;
     calendarURL.value = await cloudStorage.getItem(currentUser, "url") || "";
     receiveEmails.checked = await cloudStorage.getItem(currentUser, "receive_emails") === true;
 
