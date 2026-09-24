@@ -1,7 +1,10 @@
+import { getStore } from "@netlify/blobs";
 import ical from 'node-ical';
 
-export async function getTimetable(email, store) {
-    const userData = store.get(email, { type: "json" });
+export async function getTimetable(email) {
+    const store = getStore("config");
+
+    const userData = await store.get(email, { type: "json" });
     let url = userData["url"];
 
     console.log(JSON.stringify(userData), url);
@@ -16,7 +19,7 @@ export async function getTimetable(email, store) {
     const timetable = ical.sync.parseICS(content);
     let events = "";
 
-    for (const event in Object.values(timetable)) {
+    for (const event of Object.values(timetable)) {
         if (event.type === "VEVENT" && event.start > new Date()) {
             let descriptionRaw = (event.description || "").replace(/\r?\n[ \t]/g, "").replace(/\\([,;])/g, "$1");
             const teacher = descriptionRaw.match(/Created By:\s*([^\n]+)/i)[1].trim() || "";

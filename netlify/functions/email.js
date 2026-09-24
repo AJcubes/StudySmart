@@ -16,7 +16,7 @@ export default async (req) => {
             continue;
         }
 
-        const emailContent = await getTimetable(userData["email"], store);
+        const emailContent = await getTimetable(blob.key);
 
         await fetch("https://api.brevo.com/v3/smtp/email", {
             method: "POST",
