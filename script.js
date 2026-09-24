@@ -22,6 +22,7 @@ const cloudStorage = {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
+        await new Promise(resolve => setTimeout(resolve, 250));
         return response.json();
     }
 }
