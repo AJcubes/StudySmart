@@ -14,7 +14,7 @@ export async function getTimetable(email) {
         }
     }
     if (!userData) {
-        return "<span>This account doesn't exist...</span>";
+        return "<span>No URL found for this account...</span>";
     }
 
     let url = userData["url"];
@@ -26,6 +26,10 @@ export async function getTimetable(email) {
             await new Promise(resolve => setTimeout(resolve, 300));
             attempts++;
         }
+    }
+
+    if (!url) {
+        return "<span>No URL found for this account...</span>";
     }
 
     const timetableResponse = await fetch(url, { redirect: "follow" });
