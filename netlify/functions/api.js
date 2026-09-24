@@ -20,7 +20,7 @@ export default async (req) => {
             value = {"email": emailRaw};
             await store.setJSON(email, value);
         }
-        return new Response(JSON.stringify({ value: value[key] || null }), {
+        return new Response(JSON.stringify({ value: value[key] }), {
             headers: { "Content-Type": "application/json" }
         });
     }
