@@ -8,7 +8,7 @@ export default async (req) => {
     const email = emailRaw.toLowerCase().replace(/[^a-z0-9]/g, "_");
     const key = url.searchParams.get("key");
 
-    const store = getStore("config")
+    const store = getStore("config");
 
     if (path === "get") {
         let value = await store.get(email, { type: "json" });
@@ -33,7 +33,7 @@ export default async (req) => {
     }
 
     if (path === "timetable") {
-        const content = await getTimetable(email);
+        const content = await getTimetable(email, store);
         return new Response(JSON.stringify({ content: content }), {
             headers: { "Content-Type": "application/json" }
         })

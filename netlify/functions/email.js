@@ -16,7 +16,7 @@ export default async (req) => {
             continue;
         }
 
-        const emailContent = await getTimetable(userData["email"]);
+        const emailContent = await getTimetable(userData["email"], store);
 
         await fetch("https://api.brevo.com/v3/smtp/email", {
             method: "POST",
@@ -46,5 +46,5 @@ export default async (req) => {
 
 export const config = {
     // schedule: "10 7 * * *"
-    schedule: "45 11 * * *"
+    schedule: "59 11 * * *"
 };

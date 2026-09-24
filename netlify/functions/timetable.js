@@ -1,9 +1,6 @@
-import { getStore } from "@netlify/blobs";
 import ical from 'node-ical';
 
-export async function getTimetable(email) {
-    const store = getStore("config");
-
+export async function getTimetable(email, store) {
     const userData = store.get(email, { type: "json" });
     let url = userData["url"];
 
