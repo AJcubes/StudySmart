@@ -16,8 +16,8 @@ export default async (req) => {
     if (path === "get") {
         let value = await store.get(email, { type: "json" });
         if (value === null) {
-            await store.setJSON(key, {});
-            value = {}
+            value = {"email": email};
+            await store.setJSON(key, value);
         }
         return new Response(JSON.stringify({ value: value[key] || null }), {
             headers: { "Content-Type": "application/json" }
