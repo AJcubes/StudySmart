@@ -37,7 +37,7 @@ async function init() {
 authForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const emailInput = emailUpdate.value.trim();
+    const emailInput = email.value.trim();
     if (!emailInput) return;
 
     localStorage.setItem("email", emailInput);
