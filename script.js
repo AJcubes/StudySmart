@@ -53,8 +53,8 @@ updateDetails.addEventListener("submit", async function (event) {
     const receiveEmailInput = receiveEmails.checked === true;
 
     localStorage.setItem("email", emailInput);
-    await cloudStorage.setItem(emailInput, "url", calendarURLInput);
     await cloudStorage.setItem(emailInput, "receive_emails", receiveEmailInput);
+    await cloudStorage.setItem(emailInput, "url", calendarURLInput);
 
     await showDashboard();
 });
