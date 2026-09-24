@@ -41,6 +41,8 @@ authForm.addEventListener("submit", async function (event) {
     if (!emailInput) return;
 
     localStorage.setItem("email", emailInput);
+    await cloudStorage.setItems(emailInput, { "url": "", "receive_emails": false });
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     await showDashboard();
 });
@@ -54,7 +56,6 @@ updateDetails.addEventListener("submit", async function (event) {
 
     localStorage.setItem("email", emailInput);
     await cloudStorage.setItems(emailInput, { "url": calendarURLInput, "receive_emails": receiveEmailInput });
-
     await new Promise(resolve => setTimeout(resolve, 500));
 
     const response = await fetch(`/api/timetable?email=${encodeURIComponent(emailInput)}`);

@@ -5,8 +5,11 @@ export async function getTimetable(email) {
     const store = getStore("config");
 
     const userData = await store.get(email, { type: "json" });
-    let url = userData["url"];
+    if (!userData) {
+        return "<span>No URL found for this account...</span>"
+    }
 
+    let url = userData["url"];
     if (!url) {
         return "<span>No URL found for this account...</span>"
     }
