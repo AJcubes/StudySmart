@@ -4,14 +4,28 @@ import ical from 'node-ical';
 export async function getTimetable(email) {
     const store = getStore("config");
 
-    const userData = await store.get(email, { type: "json" });
+    let userData = null;
+    let attempts = 0;
+    while (!userData && attempts < 5) {
+        userData = await store.get(email, { type: "json" });
+        if (!userData) {
+            await new Promise(resolve => setTimeout(resolve, 300));
+            attempts++;
+        }
+    }
     if (!userData) {
-        return "<span>No URL found for this account...</span>"
+        return "<span>This account doesn't exist...</span>";
     }
 
     let url = userData["url"];
-    if (!url) {
-        return "<span>No URL found for this account...</span>"
+    attempts = 0;
+    while (!url && attempts < 5) {
+        userData = await store.get(email, { type: "json" });
+        url = userData?.url;
+        if (!url) {
+            await new Promise(resolve => setTimeout(resolve, 300));
+            attempts++;
+        }
     }
 
     const timetableResponse = await fetch(url, { redirect: "follow" });
@@ -25,7 +39,8 @@ export async function getTimetable(email) {
             let descriptionRaw = (event.description || "").replace(/\r?\n[ \t]/g, "").replace(/\\([,;])/g, "$1");
             const teacher = descriptionRaw.match(/Created By:\s*([^\n]+)/i)[1].trim() || "";
             const assignmentURL = descriptionRaw.match(/View Task:\s*([^\n]+)/i)[1].trim() || "";
-            const description = descriptionRaw.match(/Description:\s*([\s\S]*?)\s*Created By:/i)[1].replace(/\\n/g, "\n").replace(/[ \t]+/g, " ").trim() || "";
+            const descriptionMatch = descriptionRaw.match(/Description:\s*([\s\S]*?)\s*Created By:/i);
+            const description = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, "\n").replace(/[ \t]+/g, " ").trim() : "";
             events += `
                 <div>
                     <h3 id="title">${event.summary || "Untitled Assignment"}${teacher ? ` (${teacher})` : ""}</h3>
