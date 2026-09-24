@@ -40,7 +40,7 @@ authForm.addEventListener("submit", async function (event) {
     const emailInput = email.value.trim();
     if (!emailInput) return;
 
-    localStorage.setItem("email", emailInput.value);
+    localStorage.setItem("email", emailInput);
 
     await showDashboard();
 });
