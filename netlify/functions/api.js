@@ -22,9 +22,9 @@ export default async (req) => {
     }
 
     if (path === "set") {
-        const { data } = await req.json();
+        const data = await req.json();
         const current = await store.get(email, { type: "json" });
-        const newData = { ...data, ...current };
+        const newData = { ...current, ...data };
         console.log(JSON.stringify(data), JSON.stringify(current), JSON.stringify(newData));
         await store.setJSON(email, newData);
         return new Response(JSON.stringify({ success: true }), {
