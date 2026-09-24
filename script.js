@@ -84,4 +84,4 @@ async function showDashboard() {
     toDo.innerHTML = data["content"];
 }
 
-await init();
+init();
