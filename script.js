@@ -1,99 +1,87 @@
-const authSection = document.getElementById('auth-section');
-const dashboardSection = document.getElementById('dashboard-section');
-const userForm = document.getElementById('user-form');
-const emailInput = document.getElementById('email-input');
-const urlInput = document.getElementById('url-input');
-const emailCheckbox = document.getElementById('email-checkbox');
-const welcomeMsg = document.getElementById('welcome-msg');
-const displayUrl = document.getElementById('display-url');
-const displayCheckboxStatus = document.getElementById('display-checkbox-status');
-const signOutBtn = document.getElementById('sign-out-btn');
-const resultBox = document.getElementById('result-box');
+const auth = document.querySelector("#auth");
+const authForm = document.querySelector("#auth-form");
+const email = document.querySelector("#email");
+const dashboard = document.querySelector("#dashboard");
+const updateDetails = document.querySelector("#update-details");
+const emailUpdate = document.querySelector("#email-update");
+const calendarURL = document.querySelector("#calendar-url");
+const receiveEmails = document.querySelector("#receive-emails");
+const signOut = document.querySelector("#sign-out");
+const toDo = document.querySelector("#to-do");
+
+const cloudStorage = {
+    async getItem(currentUser, key) {
+        const response = await fetch(`/api/get?email=${encodeURIComponent(currentUser)}&key=${encodeURIComponent(key)}`);
+        const data = await response.json();
+        return data.value;
+    },
+
+    async setItem(currentUser, key, value) {
+        const response = await fetch(`/api/set?email=${encodeURIComponent(currentUser)}&key=${encodeURIComponent(key)}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ value })
+        });
+        return response.json();
+    }
+}
 
 async function init() {
-    const savedEmail = localStorage.getItem('user_email');
-    const savedUrl = localStorage.getItem('user_url');
-    const savedCheckbox = localStorage.getItem('user_email_checked') === 'true';
+    const storedEmail = localStorage.getItem("email");
 
-    if (savedEmail) {
-        emailCheckbox.checked = savedCheckbox;
-        showDashboard(savedEmail, savedUrl || "", savedCheckbox);
-        if (savedUrl) {
-            fetchTargetUrl(null, savedEmail);
-        }
+    if (storedEmail) {
+        await showDashboard();
     }
 }
 
-userForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = emailInput.value.trim();
-    const targetUrl = urlInput.value.trim();
-    const emailChecked = emailCheckbox.checked;
+authForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-    if (!email) return;
+    const emailInput = email.value.trim();
+    if (!emailInput) return;
 
-    // Save to LocalStorage immediately
-    localStorage.setItem('user_email', email);
-    localStorage.setItem('user_email_checked', emailChecked);
-    if (targetUrl) {
-        localStorage.setItem('user_url', targetUrl);
-    }
+    localStorage.setItem("email", emailInput.value);
 
-    // Save to Netlify Blobs via serverless router (/api/save)
-    try {
-        if (targetUrl) {
-            await fetch('/api/save', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, targetUrl, emailChecked })
-            });
-        }
-    } catch (err) {
-        console.error("Failed to sync to Netlify blobs:", err);
-    }
-
-    showDashboard(email, targetUrl || localStorage.getItem('user_url') || "", emailChecked);
-    fetchTargetUrl(targetUrl || localStorage.getItem('user_url'), email);
+    await showDashboard();
 });
 
-signOutBtn.addEventListener('click', () => {
-    localStorage.removeItem('user_email');
-    localStorage.removeItem('user_url');
-    localStorage.removeItem('user_email_checked');
-    dashboardSection.style.display = 'none';
-    authSection.style.display = 'block';
-    userForm.reset();
-    resultBox.textContent = '';
+updateDetails.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const emailInput = emailUpdate.value.trim() || "";
+    const calendarURLInput = calendarURL.value.trim() || "";
+    const receiveEmailInput = emailUpdate.checked || false;
+
+    localStorage.setItem("email", emailInput);
+    await cloudStorage.setItem(emailInput, "url", calendarURLInput);
+    await cloudStorage.setItem(emailInput, "receive_emails", receiveEmailInput);
+
+    await showDashboard();
 });
 
-function showDashboard(email, url, emailChecked) {
-    authSection.style.display = 'none';
-    dashboardSection.style.display = 'block';
-    welcomeMsg.textContent = `Welcome, ${email}`;
-    displayUrl.textContent = url || "None provided";
-    displayCheckboxStatus.textContent = emailChecked ? "True" : "False";
+signOut.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    localStorage.removeItem("email");
+
+    dashboard.style.display = "none";
+    auth.style.display = "block";
+    authForm.reset();
+    toDo.innerHTML = "";
+});
+
+async function showDashboard() {
+    const currentUser = localStorage.getItem("email");
+
+    auth.style.display = "none";
+    dashboard.style.display = "block";
+
+    calendarURL.textContent = cloudStorage.getItem(currentUser, "url") || "";
+    receiveEmails.checked = cloudStorage.getItem(currentUser, "receive_emails") || false;
+
+    const response = await fetch(`/api/timetable?email=${encodeURIComponent(currentUser)}`);
+    const data = await response.json();
+    toDo.innerHTML = data["content"];
 }
 
-async function fetchTargetUrl(url, email) {
-    resultBox.textContent = "Fetching target URL (following redirects)...";
-    try {
-        let queryEndpoint = `/api/fetch-url?`;
-        if (url) queryEndpoint += `url=${encodeURIComponent(url)}`;
-        else if (email) queryEndpoint += `email=${encodeURIComponent(email)}`;
-
-        const res = await fetch(queryEndpoint);
-        const data = await res.json();
-
-        if (!res.ok) {
-            throw new Error(data.error || "Failed to fetch");
-        }
-
-        displayUrl.textContent = data.fetchedUrl;
-        localStorage.setItem('user_url', data.fetchedUrl);
-        resultBox.textContent = data.body;
-    } catch (err) {
-        resultBox.textContent = `Error fetching target URL: ${err.message}`;
-    }
-}
-
-init();
+await init();

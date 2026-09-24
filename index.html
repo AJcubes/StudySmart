@@ -2,43 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Blob & URL Fetcher</title>
+    <title>StudySense</title>
 </head>
 <body>
-
-<div id="auth-section">
-    <h2>Sign In / Sign Up</h2>
-    <form id="user-form">
+<div id="auth">
+    <h1>Sign in / Sign up</h1>
+    <form id="auth-form">
         <div>
-            <label>Email: </label>
-            <input type="email" id="email-input" required placeholder="name@example.com">
+            <label for="email">Email: </label>
+            <input id="email" type="email" name="email" placeholder="Email">
         </div>
         <br>
-        <div>
-            <label>URL: </label>
-            <input type="url" id="url-input" placeholder="https://example.com/feed.ics">
-        </div>
-        <br>
-        <div>
-            <label>
-                <input type="checkbox" id="email-checkbox"> Email Enabled
-            </label>
-        </div>
-        <br>
-        <button type="submit">Save & Continue</button>
+        <button type="submit">Continue</button>
     </form>
 </div>
-
-<div id="dashboard-section" style="display:none;">
-    <h2 id="welcome-msg"></h2>
-    <p><strong>Saved URL:</strong> <span id="display-url"></span></p>
-    <p><strong>Email Option:</strong> <span id="display-checkbox-status"></span></p>
-    <button id="sign-out-btn">Sign Out</button>
-
-    <h3>Fetched Content Result:</h3>
-    <pre id="result-box" style="background:#f4f4f4; padding:10px; border:1px solid #ccc; max-height:400px; overflow:auto;"></pre>
+<div id="dashboard" style="display: none;">
+    <h1>StudySense</h1>
+    <form id="update-details">
+        <div>
+            <label for="email-update">Email: </label>
+            <input id="email-update" type="email" name="email" placeholder="Email">
+        </div>
+        <br>
+        <div>
+            <label for="calendar-url">Calendar URL: </label>
+            <input id="calendar-url" type="text" name="calendar-url" placeholder="Calendar URL">
+        </div>
+        <br>
+        <div>
+            <label for="receive-emails">Receive emails: </label>
+            <input id="receive-emails" type="checkbox" name="receive-emails" value="True">
+        </div>
+        <br>
+        <button type="submit">Save</button>
+    </form>
+    <button id="sign-out">Sign Out</button>
+    <h2>To Do:</h2>
+    <div id="to-do"></div>
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>

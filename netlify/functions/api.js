@@ -1,99 +1,47 @@
 import { getStore } from "@netlify/blobs";
+import { getTimetable } from "./timetable.js";
 
 export default async (req) => {
     const url = new URL(req.url);
     const path = url.pathname.split("/").pop();
+    const email = url.searchParams.get("email").toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const key = url.searchParams.get("key");
 
-    // Handle CORS preflight
-    if (req.method === "OPTIONS") {
-        return new Response("OK", {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type",
-            },
+    if (!key) {
+        return new Response("No key provided", { status: 400 });
+    }
+
+    const store = getStore("config")
+
+    if (path === "get") {
+        let value = await store.get(email, { type: "json" });
+        if (value === null) {
+            await store.setJSON(key, {});
+            value = {}
+        }
+        return new Response(JSON.stringify({ value: value[key] || null }), {
+            headers: { "Content-Type": "application/json" }
         });
     }
 
-    const headers = { "Access-Control-Allow-Origin": "*" };
-
-    try {
-        const store = getStore("user-configs");
-
-        // 1. SAVE Endpoint
-        if (req.method === "POST" && path === "save") {
-            const { email, targetUrl, emailChecked } = await req.json();
-            if (!email || !targetUrl) {
-                return new Response(JSON.stringify({ error: "Missing email or url" }), {
-                    status: 400,
-                    headers: { ...headers, "Content-Type": "application/json" },
-                });
-            }
-
-            const key = email.toLowerCase().replace(/[^a-z0-9]/g, "_");
-            await store.setJSON(key, {
-                email,
-                targetUrl,
-                emailChecked: Boolean(emailChecked),
-                updatedAt: new Date().toISOString()
-            });
-
-            return new Response(JSON.stringify({ success: true, key }), {
-                status: 200,
-                headers: { ...headers, "Content-Type": "application/json" },
-            });
-        }
-
-        // 2. GET/FETCH Endpoint (Bypasses CORS & follows redirects server-side)
-        if (req.method === "GET" && path === "fetch-url") {
-            const targetUrl = url.searchParams.get("url");
-            const email = url.searchParams.get("email");
-
-            let finalTargetUrl = targetUrl;
-            if (!finalTargetUrl && email) {
-                const key = email.toLowerCase().replace(/[^a-z0-9]/g, "_");
-                const data = await store.get(key, { type: "json" });
-                if (data && data.targetUrl) {
-                    finalTargetUrl = data.targetUrl;
-                }
-            }
-
-            if (!finalTargetUrl) {
-                return new Response(JSON.stringify({ error: "No URL found for this user/request" }), {
-                    status: 404,
-                    headers: { ...headers, "Content-Type": "application/json" },
-                });
-            }
-
-            const externalRes = await fetch(finalTargetUrl, { redirect: "follow" });
-            const textResponse = await externalRes.text();
-
-            return new Response(
-                JSON.stringify({
-                    fetchedUrl: finalTargetUrl,
-                    status: externalRes.status,
-                    contentType: externalRes.headers.get("content-type"),
-                    body: textResponse,
-                }),
-                {
-                    status: 200,
-                    headers: { ...headers, "Content-Type": "application/json" },
-                }
-            );
-        }
-
-        return new Response(JSON.stringify({ error: "Not Found" }), {
-            status: 404,
-            headers: { ...headers, "Content-Type": "application/json" },
-        });
-    } catch (err) {
-        return new Response(JSON.stringify({ error: err.message }), {
-            status: 500,
-            headers: { ...headers, "Content-Type": "application/json" },
+    if (path === "set") {
+        const { value } = await req.json();
+        const current = await store.get(email, { type: "json" });
+        current[key] = value;
+        await store.setJSON(key, current);
+        return new Response(JSON.stringify({ success: true }), {
+            headers: { "Content-Type": "application/json" }
         });
     }
-};
+
+    if (path === "timetable") {
+        const content = await getTimetable(email);
+        return new Response(JSON.stringify({ content: content }), {
+            headers: { "Content-Type": "application/json" }
+        })
+    }
+}
 
 export const config = {
-    path: "/api/*",
-};
+    path: "/api/*"
+}
