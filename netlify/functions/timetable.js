@@ -26,7 +26,7 @@ export async function getTimetable(email) {
             events += `
                 <div>
                     <h3 id="title">${event.summary || "Untitled Assignment"}${teacher ? ` (${teacher})` : ""}</h3>
-                    <h6 id="due">Due on ${event.end.toLocaleString("en-GB", {
+                    <h6 id="due">Due: ${event.end.toLocaleString("en-GB", {
                         weekday: "long",
                         day: "numeric",
                         month: "long",
@@ -38,7 +38,7 @@ export async function getTimetable(email) {
                     <div id="details">
                         ${description.split(/\n+/).map(line => `<p>${line}</p>`).join("")}
                     </div>
-                    <h5>View Assignment: ${assignmentURL}</h5>
+                    <h5>View Assignment: <a href="${assignmentURL}">${assignmentURL}</a></h5>
                 </div>
             `;
         }

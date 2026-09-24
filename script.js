@@ -13,6 +13,7 @@ const cloudStorage = {
     async getItem(currentUser, key) {
         const response = await fetch(`/api/get?email=${encodeURIComponent(currentUser)}&key=${encodeURIComponent(key)}`);
         const data = await response.json();
+        await new Promise(resolve => setTimeout(resolve, 1000));
         return data.value;
     },
 
@@ -22,7 +23,7 @@ const cloudStorage = {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         return response.json();
     }
 }
