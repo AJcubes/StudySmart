@@ -4,7 +4,8 @@ import { getTimetable } from "./timetable.js";
 export default async (req) => {
     const url = new URL(req.url);
     const path = url.pathname.split("/").pop();
-    const email = url.searchParams.get("email").toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const emailRaw = url.searchParams.get("email");
+    const email = emailRaw.toLowerCase().replace(/[^a-z0-9]/g, "_");
     const key = url.searchParams.get("key");
 
     if (!key && path !== "timetable") {
@@ -16,7 +17,7 @@ export default async (req) => {
     if (path === "get") {
         let value = await store.get(email, { type: "json" });
         if (value === null) {
-            value = {"email": email};
+            value = {"email": emailRaw};
             await store.setJSON(email, value);
         }
         return new Response(JSON.stringify({ value: value[key] || null }), {

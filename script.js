@@ -50,7 +50,7 @@ updateDetails.addEventListener("submit", async function (event) {
 
     const emailInput = emailUpdate.value.trim() || "";
     const calendarURLInput = calendarURL.value.trim() || "";
-    const receiveEmailInput = emailUpdate.checked || false;
+    const receiveEmailInput = emailUpdate.checked === true;
 
     localStorage.setItem("email", emailInput);
     await cloudStorage.setItem(emailInput, "url", calendarURLInput);
@@ -66,6 +66,7 @@ signOut.addEventListener("click", function (event) {
 
     dashboard.style.display = "none";
     auth.style.display = "block";
+
     authForm.reset();
     toDo.innerHTML = "";
 });
@@ -77,7 +78,7 @@ async function showDashboard() {
     dashboard.style.display = "block";
 
     calendarURL.textContent = await cloudStorage.getItem(currentUser, "url") || "";
-    receiveEmails.checked = await cloudStorage.getItem(currentUser, "receive_emails") === true || false;
+    receiveEmails.checked = await cloudStorage.getItem(currentUser, "receive_emails") === true;
 
     const response = await fetch(`/api/timetable?email=${encodeURIComponent(currentUser)}`);
     const data = await response.json();
