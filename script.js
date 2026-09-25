@@ -78,7 +78,7 @@ async function showDashboard() {
     auth.style.display = "none";
     dashboard.style.display = "block";
 
-    emailValue.innerText = `Email: ${currentUser.value}`;
+    emailValue.innerText = `Email: ${currentUser}`;
     calendarURL.value = await cloudStorage.getItem(currentUser, "url") || "";
     receiveEmails.checked = await cloudStorage.getItem(currentUser, "receive_emails") === true;
 
