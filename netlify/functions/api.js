@@ -4,9 +4,9 @@ import { getTimetable } from "./timetable.js";
 export default async (req) => {
     const url = new URL(req.url);
     const path = url.pathname.split("/").pop();
+    const key = url.searchParams.get("key");
     const emailRaw = url.searchParams.get("email");
     const email = emailRaw.toLowerCase().replace(/[^a-z0-9]/g, "_");
-    const key = url.searchParams.get("key");
 
     const store = getStore("config");
 
@@ -16,7 +16,7 @@ export default async (req) => {
             value = {"email": emailRaw};
             await store.setJSON(email, value);
         }
-        return new Response(JSON.stringify({ value: value[key] }), {
+        return new Response(JSON.stringify({ value: value[key], success: true }), {
             headers: { "Content-Type": "application/json" }
         });
     }
@@ -24,6 +24,7 @@ export default async (req) => {
     if (path === "set") {
         const data = await req.json();
         const current = await store.get(email, { type: "json" });
+        current["email"] = emailRaw;
         const newData = { ...current, ...data };
         await store.setJSON(email, newData);
         return new Response(JSON.stringify({ success: true }), {
@@ -33,7 +34,7 @@ export default async (req) => {
 
     if (path === "timetable") {
         const content = await getTimetable(email);
-        return new Response(JSON.stringify({ content: content }), {
+        return new Response(JSON.stringify({ content: content, success: true }), {
             headers: { "Content-Type": "application/json" }
         })
     }

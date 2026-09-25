@@ -33,7 +33,7 @@ export default async (req) => {
                     email: process.env.BREVO_SENDER_EMAIL
                 },
                 to: [{ email: userData["email"] }],
-                subject: "StudySense - To-Do",
+                subject: "StudySmart - To-Do",
                 htmlContent: `
                     <h1>StudySmart</h1>
                     <h3>To-Do:</h3>

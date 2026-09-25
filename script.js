@@ -3,7 +3,7 @@ const authForm = document.querySelector("#auth-form");
 const email = document.querySelector("#email");
 const dashboard = document.querySelector("#dashboard");
 const updateDetails = document.querySelector("#update-details");
-const emailUpdate = document.querySelector("#email-update");
+const emailValue = document.querySelector("#value");
 const calendarURL = document.querySelector("#calendar-url");
 const receiveEmails = document.querySelector("#receive-emails");
 const signOut = document.querySelector("#sign-out");
@@ -49,14 +49,13 @@ authForm.addEventListener("submit", async function (event) {
 updateDetails.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const emailInput = emailUpdate.value.trim() || "";
+    const currentEmail = localStorage.getItem("email");
     const calendarURLInput = calendarURL.value.trim() || "";
     const receiveEmailInput = receiveEmails.checked === true;
 
-    localStorage.setItem("email", emailInput);
-    await cloudStorage.setItems(emailInput, { "url": calendarURLInput, "receive_emails": receiveEmailInput });
+    await cloudStorage.setItems(currentEmail, { "url": calendarURLInput, "receive_emails": receiveEmailInput });
 
-    const response = await fetch(`/api/timetable?email=${encodeURIComponent(emailInput)}`);
+    const response = await fetch(`/api/timetable?email=${encodeURIComponent(currentEmail)}`);
     const data = await response.json();
     toDo.innerHTML = data["content"];
 });
@@ -79,7 +78,7 @@ async function showDashboard() {
     auth.style.display = "none";
     dashboard.style.display = "block";
 
-    emailUpdate.value = currentUser;
+    emailValue.innerText = `Email: ${currentUser.value}`;
     calendarURL.value = await cloudStorage.getItem(currentUser, "url") || "";
     receiveEmails.checked = await cloudStorage.getItem(currentUser, "receive_emails") === true;
 
