@@ -4,6 +4,8 @@ import ical from 'node-ical';
 export async function getTimetable(email) {
     const store = getStore("config");
 
+    console.log("reached1")
+
     let userData = null;
     let attempts = 0;
     while (!userData && attempts < 5) {
@@ -16,6 +18,8 @@ export async function getTimetable(email) {
     if (!userData) {
         return "<span>No URL found for this account...</span>";
     }
+
+    console.log("reached2")
 
     let url = userData["url"];
     attempts = 0;
@@ -31,6 +35,8 @@ export async function getTimetable(email) {
     if (!url) {
         return "<span>No URL found for this account...</span>";
     }
+
+    console.log("reached3")
 
     try {
         const timetableResponse = await fetch(url, {redirect: "follow"});
