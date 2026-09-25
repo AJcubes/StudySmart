@@ -1,7 +1,7 @@
 import { getStore } from "@netlify/blobs";
 import { getTimetable } from "./timetable.js";
 
-export default async (req) => {
+export async function email() {
     const store = getStore("config");
     const { blobs } = await store.list();
 
@@ -48,7 +48,3 @@ export default async (req) => {
     console.log("========================");
     return new Response("Executed successfully.");
 }
-
-export const config = {
-    schedule: "30 7 * * *"
-};

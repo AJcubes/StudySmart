@@ -35,6 +35,10 @@ export async function getTimetable(email) {
     const timetableResponse = await fetch(url, { redirect: "follow" });
     const content = await timetableResponse.text();
 
+    if (!content || !content.trim().toUpperCase().startsWith("BEGIN:VCALENDAR")) {
+        return "<span>Invalid URL...</span>";
+    }
+
     const timetable = ical.sync.parseICS(content);
     let events = "";
 
