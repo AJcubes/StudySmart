@@ -2,6 +2,8 @@ import { getStore } from "@netlify/blobs";
 import ical from 'node-ical';
 
 export async function getTimetable(email) {
+    console.log("reached")
+
     const store = getStore("config");
 
     console.log("reached1")
