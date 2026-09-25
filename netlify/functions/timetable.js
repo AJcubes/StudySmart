@@ -40,14 +40,18 @@ export async function getTimetable(email) {
 
     for (const event of Object.values(timetable)) {
         if (event.type === "VEVENT" && event.start > new Date()) {
-            let descriptionRaw = (event.description || "").replace(/\r?\n[ \t]/g, "").replace(/\\([,;])/g, "$1");
-            const teacher = descriptionRaw.match(/Created By:\s*([^\n]+)/i)[1].trim() || "";
-            const assignmentURL = descriptionRaw.match(/View Task:\s*([^\n]+)/i)[1].trim() || "";
+            let descriptionRaw = event.description || "";
+            const teacherMatch = descriptionRaw.match(/Created By:\s*([^\n]+)/i);
+            const assignmentURLMatch = descriptionRaw.match(/View Task:\s*([^\n]+)/i);
+
+            const teacher = teacherMatch?.[1]?.trim() ? ` (${teacherMatch[1].trim()})` : "";
+            const assignmentURL = assignmentURLMatch?.[1]?.trim() ? `<h5>View Assignment: <a href="${assignmentURLMatch[1].trim()}">${assignmentURLMatch[1].trim()}</a></h5>` : "";
+
             const descriptionMatch = descriptionRaw.match(/Description:\s*([\s\S]*?)\s*Created By:/i);
             const description = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, "\n").replace(/[ \t]+/g, " ").trim() : "";
             events += `
-                <div>
-                    <h3 id="title">${event.summary || "Untitled Assignment"}${teacher ? ` (${teacher})` : ""}</h3>
+                <div style="border: solid black;">
+                    <h3 id="title">${event.summary || "Untitled Assignment"}${teacher}</h3>
                     <h6 id="due">Due: ${event.end.toLocaleString("en-GB", {
                         weekday: "long",
                         day: "numeric",
@@ -58,9 +62,9 @@ export async function getTimetable(email) {
                     })}
                     </h6>
                     <div id="details">
-                        ${description.split(/\n+/).map(line => `<p>${line}</p>`).join("")}
+                        ${description.split(/\r?\n/).map(line => line.trim() ? `<p>${line.trim()}</p>` : "").join("")}
                     </div>
-                    <h5>View Assignment: <a href="${assignmentURL}">${assignmentURL}</a></h5>
+                    ${assignmentURL}
                 </div>
             `;
         }

@@ -9,6 +9,8 @@ export default async (req) => {
         return new Response("No blobs found.");
     }
 
+    console.log("======== Emails ========");
+
     for (const blob of blobs) {
         const userData = await store.get(blob.key, { type: "json" });
 
@@ -39,11 +41,14 @@ export default async (req) => {
                 `
             })
         });
+
+        console.log(userData["email"]);
     }
 
+    console.log("========================");
     return new Response("Executed successfully.");
 }
 
 export const config = {
-    schedule: "4 8 * * *"
+    schedule: "30 7 * * *"
 };
