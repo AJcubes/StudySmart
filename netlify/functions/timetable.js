@@ -54,7 +54,7 @@ export async function getTimetable(email) {
             const descriptionMatch = descriptionRaw.match(/Description:\s*([\s\S]*?)\s*Created By:/i);
             const description = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, "\n").replace(/[ \t]+/g, " ").trim() : "";
             events += `
-                <div style="border: solid black;">
+                <div style="margin: 20px 0; padding: 15px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                     <h3 id="title">${event.summary || "Untitled Assignment"}${teacher}</h3>
                     <h6 id="due">Due: ${event.end.toLocaleString("en-GB", {
                         weekday: "long",
