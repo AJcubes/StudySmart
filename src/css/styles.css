@@ -31,3 +31,12 @@ button {
 button:hover {
     background-color: #95c2c2;
 }
+
+#sign-out {
+    background-color: #e2b5b5;
+    color: #543b3b;
+}
+
+#sign-out:hover {
+    background-color: #d29999;
+}
