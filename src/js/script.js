@@ -41,7 +41,6 @@ authForm.addEventListener("submit", async function (event) {
     if (!emailInput) return;
 
     localStorage.setItem("email", emailInput);
-    await cloudStorage.setItems(emailInput, { "url": "", "receive_emails": false });
 
     await showDashboard();
 });
