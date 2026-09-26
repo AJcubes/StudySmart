@@ -67,7 +67,7 @@ export async function getTimetable(email) {
                 .join("\n") : "";
 
             events += `
-                <div style="margin: 20px 0; padding: 15px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <div style="margin: 20px 0; padding: 15px; background-color: #f4f4f5; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                     <h3 style="margin: 0;">${event.summary || "Untitled Assignment"}${teacher}</h3>
                     <h6 style="margin: 3px;">Due: ${event.end.toLocaleString("en-GB", {
                         weekday: "long",

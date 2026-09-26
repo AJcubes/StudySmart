@@ -20,7 +20,7 @@ export async function email() {
 
         const emailContent = await getTimetable(blob.key);
 
-        await fetch("https://api.brevo.com/v3/smtp/email", {
+        const response = await fetch("https://api.brevo.com/v3/smtp/email", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -36,13 +36,13 @@ export async function email() {
                 subject: "StudySmart - To-Do",
                 htmlContent: `
                     <h1>StudySmart</h1>
-                    <h3>To-Do:</h3>
+                    <h2>To Do:</h2>
                     ${emailContent}
                 `
             })
         });
 
-        console.log(userData["email"]);
+        console.log(`${userData["email"]} - ${response.ok ? "OK" : "FAILED"}`);
     }
 
     console.log("========================");
