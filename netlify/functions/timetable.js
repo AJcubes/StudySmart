@@ -50,7 +50,7 @@ export async function getTimetable(email) {
             const assignmentURLMatch = descriptionRaw.match(/View Task:\s*([^\n]+)/i);
 
             const teacher = teacherMatch?.[1]?.trim() ? ` (${teacherMatch[1].trim()})` : "";
-            const assignmentURL = assignmentURLMatch?.[1]?.trim() ? `<h5 style="margin: 0;">View Assignment: <a href="${assignmentURLMatch[1].trim()}">${assignmentURLMatch[1].trim()}</a></h5>` : "";
+            const assignmentURL = assignmentURLMatch?.[1]?.trim() ? `<h5 style="margin: 0;">View Assignment: <a href="${assignmentURLMatch[1].trim()}" target="_blank">${assignmentURLMatch[1].trim()}</a></h5>` : "";
 
             const htmlMatch = htmlRaw.match(/Description(?:<\/b>)?:?\s*([\s\S]*?)(?:<br\s*\/?>\s*<b>\s*Created By|Created By:|$)/i);
             const html = htmlMatch ? htmlMatch[1]

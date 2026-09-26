@@ -37,12 +37,12 @@ export async function email() {
                 htmlContent: `
                 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px;">
                     <div style="display: flex;">
-                        <img src="https://studysmartesf.netlify.app/src/images/favicon.png" alt="StudySmart Logo">
+                        <img src="https://studysmartesf.netlify.app/src/images/favicon.png" alt="StudySmart Logo" style="height: 72px; margin-right: 18px;">
                         <h1>StudySmart</h1>
                     </div>
                     <h2>To Do:</h2>
                     ${emailContent}
-                    <a href="https://studysmartesf.netlify.app/">View the website</a>
+                    <h6>Visit the website: <a href="https://studysmartesf.netlify.app/">https://studysmartesf.netlify.app/</a></h6>
                 </div>
                 `
             })

@@ -61,3 +61,11 @@ button:hover {
 #sign-out:hover {
     background-color: #d29999;
 }
+
+a:link {
+    color: #758e96;
+}
+
+a:visited {
+    color: #9b7878;
+}
