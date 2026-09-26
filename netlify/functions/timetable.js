@@ -78,7 +78,7 @@ export async function getTimetable(email) {
                         hour12: true
                     })}
                     </h6>
-                    <div id="details">
+                    <div id="details" style="margin: 25px;">
                         ${html}
                     </div>
                     ${assignmentURL}
