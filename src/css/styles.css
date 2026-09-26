@@ -126,12 +126,16 @@ button:hover {
     background-color: #d29999;
 }
 
-/* Visited link styling */
+/* Link styling */
+a:link {
+    color: #758e96;
+}
+
 a:visited {
     color: #9b7878 !important;
 }
 
-/* Information button styling */
+/* Information link styling */
 #information {
     text-decoration: none;
 }
