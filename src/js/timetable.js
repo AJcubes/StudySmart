@@ -21,7 +21,7 @@ export async function getTimetable(email) {
         }
     }
     if (!userData) {
-        return "<span>No URL found for this account...</span>";
+        return "<h4>No URL found for this account...</h4>";
     }
 
     // Same type of loop logic to keep retrying (max 5 attempts) until a URL is found in the user's data - AI was used.
@@ -37,7 +37,7 @@ export async function getTimetable(email) {
         }
     }
     if (!url) {
-        return "<span>No URL found for this account...</span>";
+        return "<h4>No URL found for this account...</h4>";
     }
 
     // Fetch the timetable using redirect follow in case it returns a redirect status code. This is specifically useful
@@ -49,7 +49,7 @@ export async function getTimetable(email) {
     if (!content ||
         !content.trim().toUpperCase().startsWith("BEGIN:VCALENDAR") ||
         !content.trim().toUpperCase().includes("NAME:TODDLE")) {
-        return "<span>Not a Toddle URL...</span>";
+        return "<h4>Not a Toddle URL...</h4>";
     }
 
     // Parse the timetable and loop through each event.
@@ -94,7 +94,7 @@ export async function getTimetable(email) {
 
             // Gets the long date if an end is specified in the event otherwise nothing.
             const date = event.end ? `
-                <h6 style="margin: 3px;">Due: ${event.end.toLocaleString("en-GB", {
+                <h5 style="margin: 3px;">Due: ${event.end.toLocaleString("en-GB", {
                     weekday: "long",
                     day: "numeric",
                     month: "long",
@@ -102,7 +102,7 @@ export async function getTimetable(email) {
                     minute: "2-digit",
                     hour12: true
                 })}
-                </h6>
+                </h5>
             ` : "";
 
             // Add the templated HTML to the events string. This template includes inline CSS to match the website so
@@ -125,5 +125,5 @@ export async function getTimetable(email) {
     }
 
     // Returns the events string if any events were found otherwise it returns an error HTML string.
-    return events || "<span>No events found...</span>";
+    return events || "<h4>You're free! No homework found...</h4>";
 }
