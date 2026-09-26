@@ -50,7 +50,7 @@ export async function getTimetable(email) {
             const assignmentURLMatch = descriptionRaw.match(/View Task:\s*([^\n]+)/i);
 
             const teacher = teacherMatch?.[1]?.trim() ? ` (${teacherMatch[1].trim()})` : "";
-            const assignmentURL = assignmentURLMatch?.[1]?.trim() ? `<h5>View Assignment: <a href="${assignmentURLMatch[1].trim()}">${assignmentURLMatch[1].trim()}</a></h5>` : "";
+            const assignmentURL = assignmentURLMatch?.[1]?.trim() ? `<h5 style="margin: 0;">View Assignment: <a href="${assignmentURLMatch[1].trim()}">${assignmentURLMatch[1].trim()}</a></h5>` : "";
 
             const htmlMatch = htmlRaw.match(/Description(?:<\/b>)?:?\s*([\s\S]*?)(?:<br\s*\/?>\s*<b>\s*Created By|Created By:|$)/i);
             const html = htmlMatch ? htmlMatch[1]
@@ -62,14 +62,14 @@ export async function getTimetable(email) {
                 .replace(/<\/p>/gi, "\n")
                 .replace(/<[^>]+>/g, "")
                 .split(/\r?\n/)
-                .map(line => line.trim() ? `<p>${line}</p>` : "")
+                .map(line => line.trim() ? `<p style="margin: 10px;">${line}</p>` : "")
                 .filter(line => line)
                 .join("\n") : "";
 
             events += `
                 <div style="margin: 20px 0; padding: 15px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                    <h3 id="title">${event.summary || "Untitled Assignment"}${teacher}</h3>
-                    <h6 id="due">Due: ${event.end.toLocaleString("en-GB", {
+                    <h3 id="title" style="margin: 0;">${event.summary || "Untitled Assignment"}${teacher}</h3>
+                    <h6 id="due" style="margin: 3px;">Due: ${event.end.toLocaleString("en-GB", {
                         weekday: "long",
                         day: "numeric",
                         month: "long",
