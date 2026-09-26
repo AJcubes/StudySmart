@@ -10,6 +10,15 @@ body {
     position: relative;
 }
 
+#title {
+    display: flex;
+}
+
+img {
+    height: 72px;
+    margin-right: 18px;
+}
+
 form {
     margin: 20px 0;
     padding: 15px;

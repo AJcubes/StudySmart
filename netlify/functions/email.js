@@ -33,11 +33,16 @@ export async function email() {
                     email: process.env.BREVO_SENDER_EMAIL
                 },
                 to: [{ email: userData["email"] }],
-                subject: "StudySmart - To-Do",
+                subject: "StudySmart - To Do",
                 htmlContent: `
-                    <h1>StudySmart</h1>
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px;">
+                    <div style="display: flex;">
+                        <img src="https://studysmartesf.netlify.app/src/images/favicon.png" alt="StudySmart Logo">
+                        <h1>StudySmart</h1>
+                    </div>
                     <h2>To Do:</h2>
                     ${emailContent}
+                </div>
                 `
             })
         });
