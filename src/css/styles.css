@@ -10,6 +10,14 @@ body {
     position: relative;
 }
 
+form {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 button {
     padding: 10px 20px;
     background-color: #b0d3d3;
