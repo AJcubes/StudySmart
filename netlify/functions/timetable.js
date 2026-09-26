@@ -44,15 +44,28 @@ export async function getTimetable(email) {
 
     for (const event of Object.values(timetable)) {
         if (event.type === "VEVENT" && event.start > new Date()) {
-            let descriptionRaw = event.description || "";
+            const descriptionRaw = event.description || "";
+            const htmlRaw = event["ALT-DESC"]?.val || descriptionRaw;
             const teacherMatch = descriptionRaw.match(/Created By:\s*([^\n]+)/i);
             const assignmentURLMatch = descriptionRaw.match(/View Task:\s*([^\n]+)/i);
 
             const teacher = teacherMatch?.[1]?.trim() ? ` (${teacherMatch[1].trim()})` : "";
             const assignmentURL = assignmentURLMatch?.[1]?.trim() ? `<h5>View Assignment: <a href="${assignmentURLMatch[1].trim()}">${assignmentURLMatch[1].trim()}</a></h5>` : "";
 
-            const descriptionMatch = descriptionRaw.match(/Description:\s*([\s\S]*?)\s*Created By:/i);
-            const description = descriptionMatch ? descriptionMatch[1].replace(/\\n/g, "\n").replace(/[ \t]+/g, " ").trim() : "";
+            const htmlMatch = htmlRaw.match(/Description(?:<\/b>)?:?\s*([\s\S]*?)(?:<br\s*\/?>\s*<b>\s*Created By|Created By:|$)/i);
+            const html = htmlMatch ? htmlMatch[1]
+                .replace(/\\"/g, '"')
+                .replace(/\\;/g, ';')
+                .replace(/\\,/g, ',')
+                .replace(/\\/g, '')
+                .replace(/&nbsp;/gi, " ")
+                .replace(/<\/p>/gi, "\n")
+                .replace(/<[^>]+>/g, "")
+                .split(/\r?\n/)
+                .map(line => line.trim() ? `<p>${line}</p>` : "")
+                .filter(line => line)
+                .join("\n") : "";
+
             events += `
                 <div style="border: solid black;">
                     <h3 id="title">${event.summary || "Untitled Assignment"}${teacher}</h3>
@@ -66,7 +79,7 @@ export async function getTimetable(email) {
                     })}
                     </h6>
                     <div id="details">
-                        ${description.split(/\r?\n/).map(line => line.trim() ? `<p>${line.trim()}</p>` : "").join("")}
+                        ${html}
                     </div>
                     ${assignmentURL}
                 </div>
@@ -74,5 +87,5 @@ export async function getTimetable(email) {
         }
     }
 
-    return events;
+    return events || "<span>No events found...</span>";
 }
