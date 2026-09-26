@@ -1,3 +1,3 @@
 AI was used for:
-  1. All RegEx matches used in code
+  1. All RegEx related code
   2. The retry code in timetable.js to prevent bugs
