@@ -1,3 +1,6 @@
 AI was used for:
   1. All RegEx related code
   2. The retry code in timetable.js to prevent bugs
+  3. The async code in email.js after bugs occurred
+  4. Some color palette choices and font choices
+  5. CSS for toggle switch

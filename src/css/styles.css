@@ -1,3 +1,4 @@
+/* HTML Body - AI was used with some color palettes and fonts */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -10,15 +11,18 @@ body {
     position: relative;
 }
 
+/* Title and logo bar */
 #title {
     display: flex;
 }
 
+/* Logo styling */
 img {
     height: 72px;
     margin-right: 18px;
 }
 
+/* Form styling */
 form {
     margin: 20px 0;
     padding: 15px;
@@ -27,10 +31,12 @@ form {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Label styling */
 label {
     font-weight: bold;
 }
 
+/* Input styling */
 input {
     padding: 5px;
     border: 1px solid #bfc9d2;
@@ -39,6 +45,7 @@ input {
     color: #3a4a58;
 }
 
+/* Toggle switch styling - AI was used */
 #switch {
     position: relative;
     display: inline-block;
@@ -76,6 +83,7 @@ input {
     transition: transform 0.4s;
 }
 
+/* Toggle switch checked styling - AI was used */
 #receive-emails:checked + #slider {
     background-color: #b0d3d3;
 }
@@ -84,6 +92,7 @@ input {
     transform: translateX(16px);
 }
 
+/* Toggle switch hover styling - AI was used */
 #switch:hover #slider {
     background-color: #bbbbbb;
 }
@@ -92,6 +101,7 @@ input {
     background-color: #95c2c2;
 }
 
+/* All buttons' styling  and hover*/
 button {
     padding: 10px 20px;
     background-color: #b0d3d3;
@@ -106,6 +116,7 @@ button:hover {
     background-color: #95c2c2;
 }
 
+/* Sign out button specific styling and hover */
 #sign-out {
     background-color: #e2b5b5;
     color: #543b3b;
@@ -115,6 +126,7 @@ button:hover {
     background-color: #d29999;
 }
 
+/* Visited link styling */
 a:visited {
     color: #9b7878 !important;
 }
