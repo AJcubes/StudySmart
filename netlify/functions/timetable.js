@@ -68,8 +68,8 @@ export async function getTimetable(email) {
 
             events += `
                 <div style="margin: 20px 0; padding: 15px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                    <h3 id="title" style="margin: 0;">${event.summary || "Untitled Assignment"}${teacher}</h3>
-                    <h6 id="due" style="margin: 3px;">Due: ${event.end.toLocaleString("en-GB", {
+                    <h3 style="margin: 0;">${event.summary || "Untitled Assignment"}${teacher}</h3>
+                    <h6 style="margin: 3px;">Due: ${event.end.toLocaleString("en-GB", {
                         weekday: "long",
                         day: "numeric",
                         month: "long",
@@ -78,7 +78,7 @@ export async function getTimetable(email) {
                         hour12: true
                     })}
                     </h6>
-                    <div id="details" style="margin: 25px;">
+                    <div style="margin: 25px;">
                         ${html}
                     </div>
                     ${assignmentURL}
