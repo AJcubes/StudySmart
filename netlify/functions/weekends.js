@@ -7,7 +7,7 @@ export default async (request) => {
     return await email();
 };
 
-// The config that is read by Netlify for them to know when to run the scheduled function
+// The config that is read by Netlify for them to know when to run the scheduled function (for weekends)
 export const config = {
     schedule: "0 2 * * 0,6"
 };
