@@ -138,4 +138,5 @@ a:visited {
 /* Information link styling */
 #information {
     text-decoration: none;
+    font-weight: bold;
 }
