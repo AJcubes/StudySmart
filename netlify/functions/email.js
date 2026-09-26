@@ -42,7 +42,7 @@ export async function email() {
                     </div>
                     <h2>To Do:</h2>
                     ${emailContent}
-                    <h6>Visit the website: <a href="https://studysmartesf.netlify.app/">https://studysmartesf.netlify.app/</a></h6>
+                    <h6>Visit the website: <a href="https://studysmartesf.netlify.app/" target="_blank" style="color: #758e96;">https://studysmartesf.netlify.app/</a></h6>
                 </div>
                 `
             })
