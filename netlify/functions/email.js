@@ -42,6 +42,7 @@ export async function email() {
                     </div>
                     <h2>To Do:</h2>
                     ${emailContent}
+                    <a href="https://studysmartesf.netlify.app/">View the website</a>
                 </div>
                 `
             })
