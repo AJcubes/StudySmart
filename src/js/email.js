@@ -24,8 +24,13 @@ export async function email() {
             return null;
         }
 
-        const content = await getTimetable(userData["url"]);
-        return { email: userData["email"], content: content };
+        const timetable = await getTimetable(userData["url"]);
+
+        if (!timetable || !timetable["email"]) {
+            return null;
+        }
+
+        return { email: userData["email"], content: timetable["content"] };
     }));
 
     // Define the website url and the image url. Create the filtered users list.

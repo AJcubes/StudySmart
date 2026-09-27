@@ -2,10 +2,10 @@
 import ical from 'node-ical';
 
 // This function fetches the timetable, parses it and returns an HTML string. It has 'export' so that other files can
-// use this function.
+// use this function. It returns an error HTML string if necessary and whether to email the returned value or not.
 export async function getTimetable(url){
     if (!url) {
-        return "<h4>No URL found. Please retry...</h4>";
+        return { content: "<h4>No URL found. Please retry...</h4>", email: false };
     }
 
     // Fetch the timetable using redirect follow in case it returns a redirect status code. This is specifically useful
@@ -17,7 +17,7 @@ export async function getTimetable(url){
     if (!content ||
         !content.trim().toUpperCase().startsWith("BEGIN:VCALENDAR") ||
         !content.trim().toUpperCase().includes("NAME:TODDLE")) {
-        return "<h4>Not a Toddle URL...</h4>";
+        return { content: "<h4>Not a Toddle URL...</h4>", email: false };
     }
 
     // Parse the timetable and loop through each event.
@@ -92,6 +92,7 @@ export async function getTimetable(url){
         }
     }
 
-    // Returns the events string if any events were found otherwise it returns an error HTML string.
-    return events || "<h4>You're free! No homework found...</h4>";
+    // Returns the events string if any events were found otherwise it returns an error HTML string. Returns whether to
+    // be emailed or not.
+    return { content: events || "<h4>You're free! No homework found...</h4>", email: true };
 }
