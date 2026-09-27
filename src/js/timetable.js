@@ -19,7 +19,7 @@ export async function getTimetable(url){
     console.timeEnd("fetching");
     console.time("texting");
     const content = await timetableResponse.text();
-    console.time("texting");
+    console.timeEnd("texting");
 
     console.time("parsing");
 
