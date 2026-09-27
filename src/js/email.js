@@ -1,6 +1,8 @@
-// Import necessary tools, such as the Netlify blobs storage and the timetable formatter from timetable.js
+// Import necessary tools, such as the Netlify blobs storage , the timetable formatter from timetable.js and pLimit to
+// regulate promises
 import { getStore } from "@netlify/blobs";
 import { getTimetable } from "./timetable.js";
+import pLimit from "p-limit";
 
 // This function sends an email to each user of their timetable. It has 'export' so that other scripts can use it.
 export async function email() {
@@ -14,9 +16,11 @@ export async function email() {
     }
     console.timeEnd("setup blobs");
 
-    // Map each user blob, get their data and find their timetable content into a list of promises - AI was used.
+    // Map each user blob, get their data and find their timetable content into a list of promises using pLimit to
+    // throttle requests - AI was used.
     console.time("promises");
-    const promises = blobs.map(async blob => {
+    const limit = pLimit(15);
+    const promises = blobs.map(blob => limit(async () =>  {
         console.time("userData " + blob.key);
         const userData = await store.get(blob.key, { type: "json" });
 
@@ -30,7 +34,7 @@ export async function email() {
         const content = await getTimetable(userData["url"]);
         console.timeEnd("getTimetable " + blob.key);
         return { email: userData["email"], content: content };
-    });
+    }));
 
     // Define the website url and the image url. Create the filtered users list.
     const href = "https://studysmartesf.netlify.app/";
