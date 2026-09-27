@@ -42,6 +42,7 @@ export async function email() {
         users.push(...results.filter(Boolean));
     }
 
+    console.log(users.length);
     console.timeEnd("chunks");
 
     // Return an error response if no users were subscribers
