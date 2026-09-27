@@ -21,7 +21,7 @@ export async function email() {
         const userData = await store.get(blob.key, { type: "json" });
 
         if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
-            console.time("userData " + blob.key);
+            console.timeEnd("userData " + blob.key);
             return null;
         }
         console.timeEnd("userData " + blob.key);
