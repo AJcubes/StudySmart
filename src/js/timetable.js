@@ -16,9 +16,11 @@ export async function getTimetable(url){
     // in platforms like Toddle, which is what this application is designed for. It checks whether the URL and the
     // content is valid, and it is a Toddle URL so that errors don't occur during parsing.
     const timetableResponse = await fetch(url, { redirect: "follow" });
-    const content = await timetableResponse.text();
-
     console.timeEnd("fetching");
+    console.time("texting");
+    const content = await timetableResponse.text();
+    console.time("texting");
+
     console.time("parsing");
 
     if (!content ||
