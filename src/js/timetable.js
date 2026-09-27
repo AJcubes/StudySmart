@@ -13,7 +13,7 @@ export async function getTimetable(email) {
     // the user was not found.
     let userData = null;
     let attempts = 0;
-    while (!userData && attempts < 5) {
+    while (!userData && attempts < 10) {
         userData = await store.get(email, { type: "json" });
         if (!userData) {
             await new Promise(resolve => setTimeout(resolve, 300));
@@ -29,7 +29,7 @@ export async function getTimetable(email) {
     // It returns an error HTML string if no URL was found.
     let url = userData["url"];
     attempts = 0;
-    while (!url && attempts < 5) {
+    while (!url && attempts < 10) {
         userData = await store.get(email, { type: "json" });
         url = userData?.url;
         if (!url) {
