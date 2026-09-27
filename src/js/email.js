@@ -6,7 +6,6 @@ import pLimit from "p-limit";
 
 // This function sends an email to each user of their timetable. It has 'export' so that other scripts can use it.
 export async function email() {
-    console.time("setup blobs");
     // Sets up the store and gets a list of blobs from the store. It returns an error message if no blobs were found.
     const store = getStore("config");
     const { blobs } = await store.list();
@@ -14,11 +13,9 @@ export async function email() {
     if (!blobs.length) {
         return new Response("No blobs found");
     }
-    console.timeEnd("setup blobs");
 
     // Map each user blob, get their data and find their timetable content into a list of promises using pLimit to
     // throttle requests - AI was used.
-    console.time("promises");
     const limit = pLimit(25);
     const promises = blobs.map(blob => limit(async () =>  {
         const userData = await store.get(blob.key, { type: "json" });
@@ -28,7 +25,6 @@ export async function email() {
         }
 
         const content = await getTimetable(userData["url"]);
-        console.log(userData["email"]);
         return { email: userData["email"], content: content };
     }));
 
@@ -36,8 +32,6 @@ export async function email() {
     const href = "https://studysmartesf.netlify.app/";
     const src = "https://studysmartesf.netlify.app/src/images/favicon.png";
     const users = (await Promise.all(promises)).filter(Boolean);
-    console.timeEnd("promises");
-    console.log(users.length);
 
     // Return an error response if no users were subscribers
     if (!users.length) {
