@@ -17,6 +17,8 @@ export async function email() {
     const src = "https://studysmartesf.netlify.app/src/images/favicon.png";
     const users = [];
 
+    console.time("chunks");
+
     // Loop through chunks of 25 users and add valid users to the list - AI was used.
     for (let i = 0; i < blobs.length; i += 25) {
         // Create a chunk
@@ -40,10 +42,14 @@ export async function email() {
         users.push(...results.filter(Boolean));
     }
 
+    console.timeEnd("chunks");
+
     // Return an error response if no users were subscribers
     if (!users.length) {
         return new Response("No subscribers found");
     }
+
+    console.time("message");
 
     // Map each user to create a message for them using their HTML content and email
     const message = users.map(user => ({
@@ -87,6 +93,8 @@ export async function email() {
             messageVersions: message
         })
     });
+
+    console.timeEnd("message");
 
     // Return a success response
     return new Response("Executed successfully.");
