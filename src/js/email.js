@@ -62,7 +62,7 @@ export async function email() {
     }));
 
     // Send all the messages at once via Brevo to minimize time spent
-    await fetch("https://api.brevo.com/v3/smtp/email", {
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -75,9 +75,20 @@ export async function email() {
                 email: process.env.BREVO_SENDER_EMAIL
             },
             subject: "StudySmart - To Do",
+            htmlContent: `
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px;">
+                    <div style="display: flex;">
+                        <img src="${src}" alt="Logo" style="height: 72px; margin-right: 18px;">
+                        <h1>StudySmart</h1>
+                    </div>
+                    <h6>Visit the website: <a href="${href}" target="_blank" style="color: #758e96;">${href}</a></h6>
+                </div>
+            `,
             messageVersions: message
         })
-    })
+    });
+
+    console.log(response.ok);
 
     return new Response("Executed successfully.");
 }
