@@ -31,7 +31,7 @@ export async function email() {
                     return null;
                 }
 
-                const content = await getTimetable(blob.key);
+                const content = await getTimetable(userData["url"]);
                 return { email: userData["email"], content: content };
             })
         );

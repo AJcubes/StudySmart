@@ -56,7 +56,7 @@ updateDetails.addEventListener("submit", async function (event) {
 
     await cloudStorage.setItems(currentEmail, { "url": calendarURLInput, "receive_emails": receiveEmailInput });
 
-    const response = await fetch(`/api/timetable?email=${encodeURIComponent(currentEmail)}`);
+    const response = await fetch(`/api/timetable?url=${encodeURIComponent(calendarURLInput)}`);
     const data = await response.json();
     toDo.innerHTML = data["content"];
 });
@@ -89,7 +89,7 @@ async function showDashboard() {
     calendarURL.value = await cloudStorage.getItem(currentUser, "url") || "";
     receiveEmails.checked = await cloudStorage.getItem(currentUser, "receive_emails") === true;
 
-    const response = await fetch(`/api/timetable?email=${encodeURIComponent(currentUser)}`);
+    const response = await fetch(`/api/timetable?url=${encodeURIComponent(calendarURL.value)}`);
     const data = await response.json();
     toDo.innerHTML = data["content"];
 }

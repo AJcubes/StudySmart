@@ -1,41 +1,9 @@
 // Import Netlify blob integration and calendar functions to parse .ics files
-import { getStore } from "@netlify/blobs";
 import ical from 'node-ical';
 
 // This function fetches the timetable, parses it and returns an HTML string. It has 'export' so that other files can
 // use this function.
-export async function getTimetable(email) {
-    // Set up the store to get user data and find URLs.
-    const store = getStore("config");
-
-    // A loop to get the userData within 5 attempts and have a timeout between each try, in case there are some
-    // conflicting usages of the Netlify blob data - AI was used for the loop logic. It returns an error HTML string if
-    // the user was not found.
-    let userData = null;
-    let attempts = 0;
-    while (!userData && attempts < 5) {
-        userData = await store.get(email, { type: "json" });
-        if (!userData) {
-            await new Promise(resolve => setTimeout(resolve, 300));
-            attempts++;
-        }
-    }
-    if (!userData) {
-        return "<h4>No URL found. Please retry...</h4>";
-    }
-
-    // Same type of loop logic to keep retrying (max 5 attempts) until a URL is found in the user's data - AI was used.
-    // It returns an error HTML string if no URL was found.
-    let url = userData["url"];
-    attempts = 0;
-    while (!url && attempts < 5) {
-        userData = await store.get(email, { type: "json" });
-        url = userData?.url;
-        if (!url) {
-            await new Promise(resolve => setTimeout(resolve, 300));
-            attempts++;
-        }
-    }
+export async function getTimetable(url){
     if (!url) {
         return "<h4>No URL found. Please retry...</h4>";
     }
@@ -53,7 +21,7 @@ export async function getTimetable(email) {
     }
 
     // Parse the timetable and loop through each event.
-    const timetable = ical.sync.parseICS(content);
+    const timetable = await ical.async.parseICS(content);
     let events = "";
 
     for (const event of Object.values(timetable)) {

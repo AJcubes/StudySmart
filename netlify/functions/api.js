@@ -13,6 +13,7 @@ export default async (req) => {
     const key = url.searchParams.get("key");
     const emailRaw = url.searchParams.get("email");
     const email = emailRaw.toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const timetableURL = url.searchParams.get("url");
 
     // Gets the store "config" from Netlify blobs and uses that throughout the code.
     const store = getStore("config");
@@ -55,7 +56,7 @@ export default async (req) => {
     // API path "timetable". This path takes the user's email and calls the helper function getTimetable from
     // /src/js/timetable.js. It takes the returned HTML content and returns that in an Object.
     if (path === "timetable") {
-        const content = await getTimetable(email);
+        const content = await getTimetable(timetableURL);
 
         return new Response(JSON.stringify({ content: content, success: true }), {
             headers: { "Content-Type": "application/json" }
