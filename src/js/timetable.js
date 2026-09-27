@@ -21,8 +21,7 @@ export async function getTimetable(email) {
         }
     }
     if (!userData) {
-        // return "<h4>No URL found for this account...</h4>";
-        return `<h4>No URL found for this account... ${JSON.stringify(userData)} ${attempts}</h4>`;
+        return "<h4>No URL found. Please retry...</h4>";
     }
 
     // Same type of loop logic to keep retrying (max 5 attempts) until a URL is found in the user's data - AI was used.
@@ -38,7 +37,7 @@ export async function getTimetable(email) {
         }
     }
     if (!url) {
-        return "<h4>No URL found for this account...</h4>";
+        return "<h4>No URL found. Please retry...</h4>";
     }
 
     // Fetch the timetable using redirect follow in case it returns a redirect status code. This is specifically useful
