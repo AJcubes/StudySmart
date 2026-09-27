@@ -13,7 +13,10 @@ body {
 
 /* Title and logo bar */
 #title {
+    cursor: pointer;
     display: flex;
+    text-decoration: none;
+    color: black !important;
 }
 
 /* Logo styling */
