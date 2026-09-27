@@ -3,7 +3,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
-    background-image: url('/src/images/background.png');
+    background-image: url('/src/images/background.webp');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
