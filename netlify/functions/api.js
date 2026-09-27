@@ -12,7 +12,7 @@ export default async (req) => {
     const path = url.pathname.split("/").pop();
     const key = url.searchParams.get("key");
     const emailRaw = url.searchParams.get("email");
-    const email = emailRaw.toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const email = emailRaw?.toLowerCase().replace(/[^a-z0-9]/g, "_");
     const timetableURL = url.searchParams.get("url");
 
     // Gets the store "config" from Netlify blobs and uses that throughout the code.
