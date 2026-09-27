@@ -10,11 +10,16 @@ export async function getTimetable(url){
         return "<h4>No URL found. Please retry...</h4>";
     }
 
+    console.time("fetching");
+
     // Fetch the timetable using redirect follow in case it returns a redirect status code. This is specifically useful
     // in platforms like Toddle, which is what this application is designed for. It checks whether the URL and the
     // content is valid, and it is a Toddle URL so that errors don't occur during parsing.
     const timetableResponse = await fetch(url, { redirect: "follow" });
     const content = await timetableResponse.text();
+
+    console.timeEnd("fetching");
+    console.time("parsing");
 
     if (!content ||
         !content.trim().toUpperCase().startsWith("BEGIN:VCALENDAR") ||
@@ -94,6 +99,7 @@ export async function getTimetable(url){
         }
     }
 
+    console.timeEnd("parsing");
     console.timeEnd("getTimetable");
     // Returns the events string if any events were found otherwise it returns an error HTML string.
     return events || "<h4>You're free! No homework found...</h4>";
