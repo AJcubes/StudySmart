@@ -9,55 +9,75 @@ export async function email() {
     const { blobs } = await store.list();
 
     if (!blobs.length) {
-        return new Response("No blobs found.");
+        return new Response("No blobs found");
     }
 
-    // Create a list of promises to send all emails asynchronously - AI was used
-    const emails = blobs.map(async (blob) => {
-        // Get the user data from Netlify blobs and make sure all data is valid
-        const userData = await store.get(blob.key, { type: "json" });
+    // Define the website url and the image url. Create the empty users list.
+    const href = "https://studysmartesf.netlify.app/";
+    const src = "https://studysmartesf.netlify.app/src/images/favicon.png";
+    const users = [];
 
-        if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
-            return;
-        }
+    // Loop through chunks of 25 users and add valid users to the list - AI was used.
+    for (let i = 0; i < blobs.length; i += 25) {
+        // Create a chunk
+        const chunk = blobs.slice(i, i + 25);
 
-        // Get the HTML content of the email using the timetable function from timetable.js
-        const content = await getTimetable(blob.key);
-        const href = "https://studysmartesf.netlify.app/";
-        const src = "https://studysmartesf.netlify.app/src/images/favicon.png";
+        // Map each chunk's user to get their data
+        const results = await Promise.all(
+            chunk.map(async blob => {
+                const userData = await store.get(blob.key, { type: "json" });
 
-        // Send the email using brevo and API keys
-        await fetch("https://api.brevo.com/v3/smtp/email", {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "api-key": process.env.BREVO_API_KEY
-            },
-            body: JSON.stringify({
-                sender: {
-                    name: "StudySmart",
-                    email: process.env.BREVO_SENDER_EMAIL
-                },
-                to: [{ email: userData["email"] }],
-                subject: "StudySmart - To Do",
-                htmlContent: `
-                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px;">
-                    <div style="display: flex;">
-                        <img src="${src}" alt="Logo" style="height: 72px; margin-right: 18px;">
-                        <h1>StudySmart</h1>
-                    </div>
-                    <h2>To Do:</h2>
-                    ${content}
-                    <h6>Visit the website: <a href="${href}" target="_blank" style="color: #758e96;">${href}</a></h6>
-                </div>
-                `
+                if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
+                    return null;
+                }
+
+                const content = await getTimetable(blob.key);
+                return { email: userData["email"], content: content };
             })
-        });
-    });
+        );
 
-    // Wait for all promises to run asynchronously and return a success response
-    await Promise.all(emails);
+        // Push all users that opt in to emails.
+        users.push(...results.filter(Boolean));
+    }
+
+    // Return an error response if no users were subscribers
+    if (!users.length) {
+        return new Response("No subscribers found");
+    }
+
+    // Map each user to create a message for them using their HTML content and email
+    const message = users.map(user => ({
+        to: [{ email: user["email"] }],
+        htmlContent: `
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px;">
+                <div style="display: flex;">
+                    <img src="${src}" alt="Logo" style="height: 72px; margin-right: 18px;">
+                    <h1>StudySmart</h1>
+                </div>
+                <h2>To Do:</h2>
+                ${user["content"]}
+                <h6>Visit the website: <a href="${href}" target="_blank" style="color: #758e96;">${href}</a></h6>
+            </div>
+        `
+    }));
+
+    // Send all the messages at once via Brevo to minimize time spent
+    await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "api-key": process.env.BREVO_API_KEY
+        },
+        body: JSON.stringify({
+            sender: {
+                name: "StudySmart",
+                email: process.env.BREVO_SENDER_EMAIL
+            },
+            subject: "StudySmart - To Do",
+            messageVersions: message
+        })
+    })
 
     return new Response("Executed successfully.");
 }
