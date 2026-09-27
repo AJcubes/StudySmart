@@ -21,7 +21,7 @@ export async function getTimetable(email) {
         }
     }
     if (!userData) {
-        return "<h4>No URL found for this account...1</h4>";
+        return "<h4>No URL found for this account...</h4>" + JSON.stringify(userData);
     }
 
     // Same type of loop logic to keep retrying (max 5 attempts) until a URL is found in the user's data - AI was used.
