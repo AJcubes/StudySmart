@@ -12,33 +12,28 @@ export async function email() {
         return new Response("No blobs found");
     }
 
-    // Define the website url and the image url. Create the empty users list.
+    // Map each user blob, get their data and find their timetable content into a list of promises - AI was used.
+    console.time("promises");
+    const promises = blobs.map(async blob => {
+        console.time("userData");
+        const userData = await store.get(blob.key, { type: "json" });
+
+        if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
+            return null;
+        }
+        console.timeEnd("userData");
+
+        console.time("getTimetable");
+        const content = await getTimetable(userData["url"]);
+        console.timeEnd("getTimetable");
+        return { email: userData["email"], content: content };
+    });
+    console.timeEnd("promises");
+
+    // Define the website url and the image url. Create the filtered users list.
     const href = "https://studysmartesf.netlify.app/";
     const src = "https://studysmartesf.netlify.app/src/images/favicon.png";
-    const users = [];
-
-    // Loop through chunks of 25 users and add valid users to the list - AI was used.
-    for (let i = 0; i < blobs.length; i += 25) {
-        // Create a chunk
-        const chunk = blobs.slice(i, i + 25);
-
-        // Map each chunk's user to get their data
-        const results = await Promise.all(
-            chunk.map(async blob => {
-                const userData = await store.get(blob.key, { type: "json" });
-
-                if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
-                    return null;
-                }
-
-                const content = await getTimetable(userData["url"]);
-                return { email: userData["email"], content: content };
-            })
-        );
-
-        // Push all users that opt in to emails.
-        users.push(...results.filter(Boolean));
-    }
+    const users = (await Promise.all(promises)).filter(Boolean);
 
     // Return an error response if no users were subscribers
     if (!users.length) {
