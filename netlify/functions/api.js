@@ -22,10 +22,12 @@ export default async (req) => {
     // with only their email in it to make sure that no bugs occur.
     if (path === "get") {
         let value = await store.get(email, { type: "json" });
+
         if (value === null) {
             value = {"email": emailRaw};
             await store.setJSON(email, value);
         }
+
         return new Response(JSON.stringify({ value: value[key], success: true }), {
             headers: { "Content-Type": "application/json" }
         });
@@ -36,10 +38,15 @@ export default async (req) => {
     // user's object to make sure no bugs occur later on.
     if (path === "set") {
         const data = await req.json();
-        const current = await store.get(email, { type: "json" });
-        current["email"] = emailRaw;
+        let current = await store.get(email, { type: "json" });
+
+        if (current === null) {
+            current = {"email": emailRaw};
+        }
+
         const newData = { ...current, ...data };
         await store.setJSON(email, newData);
+
         return new Response(JSON.stringify({ success: true }), {
             headers: { "Content-Type": "application/json" }
         });
@@ -49,6 +56,7 @@ export default async (req) => {
     // /src/js/timetable.js. It takes the returned HTML content and returns that in an Object.
     if (path === "timetable") {
         const content = await getTimetable(email);
+        
         return new Response(JSON.stringify({ content: content, success: true }), {
             headers: { "Content-Type": "application/json" }
         })

@@ -72,6 +72,8 @@ signOut.addEventListener("click", function (event) {
     auth.style.display = "block";
 
     authForm.reset();
+    updateDetails.reset();
+    emailValue.innerHTML = "";
     toDo.innerHTML = "";
 });
 
