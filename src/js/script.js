@@ -42,7 +42,7 @@ authForm.addEventListener("submit", async function (event) {
 
     localStorage.setItem("email", emailInput);
 
-    await showDashboard();
+    window.location.reload();
 });
 
 // Update form listener. It listens to the update-details form in the dashboard to set new calendar URLs and their
@@ -56,9 +56,7 @@ updateDetails.addEventListener("submit", async function (event) {
 
     await cloudStorage.setItems(currentEmail, { "url": calendarURLInput, "receive_emails": receiveEmailInput });
 
-    const response = await fetch(`/api/timetable?email=${encodeURIComponent(currentEmail)}`);
-    const data = await response.json();
-    toDo.innerHTML = data["content"];
+    window.location.reload();
 });
 
 // Sign out button listener. It listens to the sign-out button and removes the email from localStorage, keeping their
@@ -68,13 +66,7 @@ signOut.addEventListener("click", function (event) {
 
     localStorage.removeItem("email");
 
-    dashboard.style.display = "none";
-    auth.style.display = "block";
-
-    authForm.reset();
-    updateDetails.reset();
-    emailValue.innerHTML = "";
-    toDo.innerHTML = "";
+    window.location.reload();
 });
 
 // Show the dashboard. This function is called after any data storage edits and updates the values displayed. It will
