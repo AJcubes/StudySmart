@@ -4,6 +4,7 @@ import { getTimetable } from "./timetable.js";
 
 // This function sends an email to each user of their timetable. It has 'export' so that other scripts can use it.
 export async function email() {
+    console.time("setup blobs");
     // Sets up the store and gets a list of blobs from the store. It returns an error message if no blobs were found.
     const store = getStore("config");
     const { blobs } = await store.list();
@@ -11,21 +12,23 @@ export async function email() {
     if (!blobs.length) {
         return new Response("No blobs found");
     }
+    console.timeEnd("setup blobs");
 
     // Map each user blob, get their data and find their timetable content into a list of promises - AI was used.
     console.time("promises");
     const promises = blobs.map(async blob => {
-        // console.time("userData" + blob.key);
+        console.time("userData " + blob.key);
         const userData = await store.get(blob.key, { type: "json" });
 
         if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
+            console.time("userData " + blob.key);
             return null;
         }
-        // console.timeEnd("userData" + blob.key);
+        console.timeEnd("userData " + blob.key);
 
-        // console.time("getTimetable" + blob.key);
+        console.time("getTimetable " + blob.key);
         const content = await getTimetable(userData["url"]);
-        // console.timeEnd("getTimetable" + blob.key);
+        console.timeEnd("getTimetable " + blob.key);
         return { email: userData["email"], content: content };
     });
 
