@@ -21,18 +21,14 @@ export async function email() {
     console.time("promises");
     const limit = pLimit(25);
     const promises = blobs.map(blob => limit(async () =>  {
-        // console.time("userData " + blob.key);
         const userData = await store.get(blob.key, { type: "json" });
 
         if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
-            // console.timeEnd("userData " + blob.key);
             return null;
         }
-        // console.timeEnd("userData " + blob.key);
 
-        // console.time("getTimetable " + blob.key);
         const content = await getTimetable(userData["url"]);
-        // console.timeEnd("getTimetable " + blob.key);
+        console.log(userData["email"]);
         return { email: userData["email"], content: content };
     }));
 
