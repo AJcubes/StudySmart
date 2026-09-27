@@ -4,6 +4,8 @@ import ical from 'node-ical';
 // This function fetches the timetable, parses it and returns an HTML string. It has 'export' so that other files can
 // use this function.
 export async function getTimetable(url){
+    console.time("getTimetable");
+
     if (!url) {
         return "<h4>No URL found. Please retry...</h4>";
     }
@@ -92,6 +94,7 @@ export async function getTimetable(url){
         }
     }
 
+    console.timeEnd("getTimetable");
     // Returns the events string if any events were found otherwise it returns an error HTML string.
     return events || "<h4>You're free! No homework found...</h4>";
 }
