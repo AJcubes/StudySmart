@@ -15,25 +15,25 @@ export async function email() {
     // Map each user blob, get their data and find their timetable content into a list of promises - AI was used.
     console.time("promises");
     const promises = blobs.map(async blob => {
-        console.time("userData" + blob.key);
+        // console.time("userData" + blob.key);
         const userData = await store.get(blob.key, { type: "json" });
 
         if (!userData || !userData["email"] || !userData["url"] || !userData["receive_emails"]) {
             return null;
         }
-        console.timeEnd("userData" + blob.key);
+        // console.timeEnd("userData" + blob.key);
 
-        console.time("getTimetable" + blob.key);
+        // console.time("getTimetable" + blob.key);
         const content = await getTimetable(userData["url"]);
-        console.timeEnd("getTimetable" + blob.key);
+        // console.timeEnd("getTimetable" + blob.key);
         return { email: userData["email"], content: content };
     });
-    console.timeEnd("promises");
 
     // Define the website url and the image url. Create the filtered users list.
     const href = "https://studysmartesf.netlify.app/";
     const src = "https://studysmartesf.netlify.app/src/images/favicon.png";
     const users = (await Promise.all(promises)).filter(Boolean);
+    console.timeEnd("promises");
     console.log(users.length);
 
     // Return an error response if no users were subscribers
