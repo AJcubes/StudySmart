@@ -62,7 +62,7 @@ export async function email() {
     }));
 
     // Send all the messages at once via Brevo to minimize time spent
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -88,7 +88,6 @@ export async function email() {
         })
     });
 
-    console.log(response.ok);
-
+    // Return a success response
     return new Response("Executed successfully.");
 }
