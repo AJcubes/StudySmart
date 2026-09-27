@@ -47,7 +47,7 @@ export default async (req) => {
         const newData = { ...current, ...data };
         await store.setJSON(email, newData);
 
-        return new Response(JSON.stringify({ success: true }), {
+        return new Response(JSON.stringify({ saved: newData, success: true }), {
             headers: { "Content-Type": "application/json" }
         });
     }
@@ -56,7 +56,7 @@ export default async (req) => {
     // /src/js/timetable.js. It takes the returned HTML content and returns that in an Object.
     if (path === "timetable") {
         const content = await getTimetable(email);
-        
+
         return new Response(JSON.stringify({ content: content, success: true }), {
             headers: { "Content-Type": "application/json" }
         })
