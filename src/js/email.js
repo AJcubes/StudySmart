@@ -35,7 +35,7 @@ export async function email() {
 
     // Define the website url and the image url. Create the filtered users list.
     const href = "https://studysmartesf.netlify.app/";
-    const src = "https://studysmartesf.netlify.app/favicon.ico";
+    const src = "https://studysmartesf.netlify.app/src/images/favicon.png";
     const users = (await Promise.all(promises)).filter(Boolean);
 
     // Return an error response if no users were subscribers
