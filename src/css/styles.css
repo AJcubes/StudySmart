@@ -34,6 +34,10 @@ form {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+form div {
+    margin-bottom: 20px;
+}
+
 /* Label styling */
 label {
     font-weight: bold;
@@ -112,7 +116,6 @@ button {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    margin: 20px 0;
     font-weight: bold;
 }
 
