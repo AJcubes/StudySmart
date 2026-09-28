@@ -143,4 +143,5 @@ a:visited {
 #information {
     text-decoration: none;
     font-weight: bold;
+    vertical-align: middle;
 }
