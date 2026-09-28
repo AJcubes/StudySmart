@@ -14,7 +14,7 @@ body {
 /* Title and logo bar */
 #title {
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     text-decoration: none;
     color: black !important;
 }
