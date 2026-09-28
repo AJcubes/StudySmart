@@ -1,9 +1,0 @@
-AI (Gemini) was used for:
-  1. All RegEx related code
-  2. The retry code in timetable.js to prevent bugs
-  3. The async promise and pLimit code in email.js after timeouts occurred
-  4. Some color palette choices and font choices
-  5. CSS for toggle switch
-
-AI code was always reviewed and modified based on the specific need. The AI never knew the full context, and only made
-fixes to small things, hence the modification.
