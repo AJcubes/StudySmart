@@ -141,10 +141,3 @@ a:link {
 a:visited {
     color: #9b7878 !important;
 }
-
-/* Information link styling */
-#information {
-    text-decoration: none;
-    font-weight: bold;
-    vertical-align: middle;
-}
