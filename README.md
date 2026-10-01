@@ -1,7 +1,7 @@
 <h1>
   <p align="center">
     <a href="https://studysmartesf.netlify.app/" target="_blank">
-      <img src="/src/images/favicon.webp" alt="Logo" height="108">
+      <img src="/src/images/favicon.png" alt="Logo" height="108">
       <br>
       StudySmart
     </a>
@@ -16,33 +16,42 @@
 ## SDG Goals
 - Our website aligns with:
   - SDG 3 - Good Health and Well-Being. Our website aims to help students stress less and study more.
-  - SDG 4 - Quality Education. Our website helps you plan your studies and get on top of your grades.
-- Find out more on our [website](https://example-canva-link.com/)!
+- Find out more on our [pitch deck](https://studysmartesf.netlify.app/src/docs/pitch.pdf) — [source](/src/docs/pitch.pdf)!
+- Find out more by watching our [presentation](https://studysmartesf.netlify.app/src/videos/presentation.mp4) — [source](/src/videos/presentation.mp4).
 
 ## Features
-- [x] Store preferences for the user's timetable URL and whether they want to receive emails or not.
-- [x] Send an email at 15:30 HKT every weekday and 10:00 HKT every weekend.
+- [x] Store preferences for the user's timetable URL and whether they want to receive emails.
+- [x] Send an email at 15:30 HKT every weekday and at 10:00 HKT every weekend.
 - [x] Homework is displayed in an easy-to-read format so as not to stress the user.
 - [ ] Add a dark mode.
 - [ ] Add a smart AI chatbot for users to converse with.
 - [ ] Add some mental health tips and tricks to stay on top of your grades.
 
-## Code Credits
-- Files [email.js](/src/js/email.js) and [api.js](/netlify/functions/api.js) use Netlify Blobs to store user data in the cloud.
-- The file [api.js](/netlify/functions/api.js) uses Netlify Functions to access the user data and modify it from the webpage.
-- Files [weekdays.js](/netlify/functions/weekdays.js) and [weekends.js](/netlify/functions/weekends.js) use Netlify Scheduled Functions to email all the users once every day.
-- The file [timetable.js](/src/js/timetable.js) uses node-ical to parse the timetables found.
-- The file [email.js](/src/js/email.js) uses pLimit to throttle the network requests to speed up the code.
+Watch a video detailing all the features [here](https://studysmartesf.netlify.app/src/videos/features.mp4) — [source](/src/videos/features.mp4).
+
+## Usage
+Go to the [website](https://studysmartesf.netlify.app/) and sign up! Follow the [instructions](#instructions) below if necessary.
+
+## Technology Stack
+- The files [email.js](/src/js/email.js) and [api.js](/netlify/functions/api.js) use [Netlify Blobs](https://docs.netlify.com/build/data-and-storage/netlify-blobs/) to store user data in the cloud.
+- The file [api.js](/netlify/functions/api.js) uses [Netlify Functions](https://docs.netlify.com/build/functions/overview/) to access the user data and modify it from the website.
+- The files [weekdays.js](/netlify/functions/weekdays.js) and [weekends.js](/netlify/functions/weekends.js) use [Netlify Scheduled Functions](https://docs.netlify.com/build/functions/scheduled-functions/) to email all the users once every day.
+- The file [email.js](/src/js/email.js) uses the [Brevo API](https://developers.brevo.com/docs/batch-send-transactional-emails) to batch-send each user a custom email.
+- The file [timetable.js](/src/js/timetable.js) uses [node-ical](https://github.com/jens-maus/node-ical) to parse the timetables found.
+- The file [email.js](/src/js/email.js) uses [pLimit](https://github.com/sindresorhus/p-limit) to throttle the network requests to speed up the code.
+
+Watch a video detailing all backend tools [here](https://studysmartesf.netlify.app/src/videos/backend.mp4) — [source](/src/videos/backend.mp4).
 
 ## Emails
 - The emails are sent on these days:
   - Weekdays - 15:30 HKT
   - Weekends - 10:00 HKT
-- The Brevo API provides a maximum of 300 emails per day, leading to a maximum of 300 active subscribers on the webpage.
+- You will receive the email from "ajcubes33@12226934.brevosend.com". Be sure to check your spam/junk folder on your first day!
+- The Brevo API provides a maximum of 300 emails per day, leading to a maximum of 300 active subscribers on the website.
 
-## Users
+## Instructions
 - Users can sign up with any email they want as long as it is valid.
-- Users need to find their Toddle homework stream URL; view the tutorial [here](https://studysmartesf.netlify.app/src/videos/tutorial.mp4) - [source](/src/videos/tutorial.mp4).
+- Users need to find their Toddle homework stream URL; view the tutorial [here](https://studysmartesf.netlify.app/src/videos/tutorial.mp4) — [source](/src/videos/tutorial.mp4).
 - Users can choose whether they want to receive emails daily or not.
 - On any day, a maximum of 300 active subscribers will receive the emails, while the others won't.
 
@@ -69,4 +78,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ---
 
-***Created by team WIS - Aarit JAIN, Aariv SHAH, Charlie FANG, Vedant Gandhi and Victor GURUNG***
+***Created by team WIS - Aarit Jain, Aariv Shah, Charlie Fang, Vedant Gandhi and Victor Gurung***
