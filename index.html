@@ -12,7 +12,7 @@
 </a>
 <div id="auth" style="display: block;">
     <h2>Sign in / Sign up</h2>
-    <form id="auth-form">
+    <form id="auth-form" method="POST">
         <div>
             <label for="email">School Email: </label>
             <input id="email" name="email" placeholder="School Email" type="email" autocomplete="email" required>
@@ -21,7 +21,7 @@
     </form>
 </div>
 <div id="dashboard" style="display: none;">
-    <form id="update-details">
+    <form id="update-details" method="POST">
         <div>
             <span id="email-value"></span>
         </div>
