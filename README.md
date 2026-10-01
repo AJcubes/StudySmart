@@ -14,8 +14,8 @@
 ---
 
 ## SDG Goals
-- Our website aligns with:
-  - SDG 3 - Good Health and Well-Being. Our website aims to help students stress less and study more.
+- Our website aligns with SDG 3 - Good Health and Well-Being.
+- Our website aims to help students stress less and study more.
 - Find out more on our [pitch deck](https://studysmartesf.netlify.app/src/docs/pitch.pdf) — [source](/src/docs/pitch.pdf)!
 - Find out more by watching our [presentation](https://studysmartesf.netlify.app/src/videos/presentation.mp4) — [source](/src/videos/presentation.mp4).
 
