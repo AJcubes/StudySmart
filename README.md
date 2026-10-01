@@ -46,7 +46,7 @@ Watch a video detailing all backend tools [here](https://studysmartesf.netlify.a
 - The emails are sent on these days:
   - Weekdays - 15:30 HKT
   - Weekends - 10:00 HKT
-- You will receive the email from "ajcubes33@12226934.brevosend.com". Be sure to check your spam/junk folder on your first day!
+- You will receive the email from "ajcubes33@12226934.brevosend.com". Be sure to check your spam/junk folder if necessary!
 - The Brevo API provides a maximum of 300 emails per day, leading to a maximum of 300 active subscribers on the website.
 
 ## Instructions
