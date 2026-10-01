@@ -23,7 +23,7 @@
 - [x] Store preferences for the user's timetable URL and whether they want to receive emails.
 - [x] Send an email at 15:30 HKT every weekday and at 10:00 HKT every weekend.
 - [x] Homework is displayed in an easy-to-read format so as not to stress the user.
-- [ ] Add a dark mode.
+- [ ] Add more colour modes like dark mode or colour-blind mode.
 - [ ] Add a smart AI chatbot for users to converse with.
 - [ ] Add some mental health tips and tricks to stay on top of your grades.
 
