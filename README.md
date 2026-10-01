@@ -26,7 +26,7 @@ Our website aligns with SDG 3 - Good Health and Well-Being. We aim to help stude
 
 https://github.com/user-attachments/assets/be86fd8e-6f51-48bf-954d-b36fdfda6b65
 
-*[Source](https://studysmartesf.netlify.app//src/videos/features.mp4)*
+*[Source](https://studysmartesf.netlify.app/src/videos/features.mp4)*
 
 - [x] Store preferences for the user's timetable URL and whether they want to receive emails.
 - [x] Send an email at 15:30 HKT every weekday and at 10:00 HKT every weekend.
@@ -42,7 +42,7 @@ Go to the [website](https://studysmartesf.netlify.app/) and sign up! Follow the 
 
 https://github.com/user-attachments/assets/0b66c7f6-ce3b-4e82-9a75-076c453657ee
 
-*[Source](https://studysmartesf.netlify.app//src/videos/backend.mp4)*
+*[Source](https://studysmartesf.netlify.app/src/videos/backend.mp4)*
 
 - The files [email.js](/src/js/email.js) and [api.js](/netlify/functions/api.js) use [Netlify Blobs](https://docs.netlify.com/build/data-and-storage/netlify-blobs/) to store user data in the cloud.
 - The file [api.js](/netlify/functions/api.js) uses [Netlify Functions](https://docs.netlify.com/build/functions/overview/) to access the user data and modify it from the website.
