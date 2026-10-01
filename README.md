@@ -57,11 +57,11 @@ Watch a video detailing all backend tools [here](https://studysmartesf.netlify.a
 
 ## AI Usage
 - AI (Gemini) was used for:
-  - All RegEx-related code.
-  - The retry code in timetable.js to prevent bugs.
-  - The async promise and pLimit code in email.js after timeouts occurred.
-  - Some colour palette choices and font choices.
-  - CSS for toggle switch.
+  - All RegEx-related code
+  - The retry code in timetable.js to prevent bugs
+  - The async promise and pLimit code in email.js after timeouts occurred
+  - Some colour palette choices and font choices
+  - CSS for toggle switch
 - AI code was always reviewed and modified based on the specific need. The AI never knew the full context and only made
 fixes to small things; hence the modifications made.
 
