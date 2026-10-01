@@ -1,7 +1,7 @@
 <h1>
   <p align="center">
     <a href="https://studysmartesf.netlify.app/" target="_blank">
-      <img src="/src/images/favicon.png" alt="Logo" height="108">
+      <img src="src/images/favicon.png" alt="Logo" height="108">
       <br>
       StudySmart
     </a>
