@@ -1,1 +1,2 @@
+# Redirect the standard browser favicon.ico path to the custom favicon so that asset paths also show the correct icon
 /favicon.ico  /src/images/favicon.png  200
