@@ -40,6 +40,7 @@ export async function getTimetable(url){
             const assignmentURL = assignmentMatch?.[1]?.trim() ?
                 `<h5 style="margin: 0;">View Assignment: <a href="${assignmentMatch[1].trim()}"
                                                             target="_blank"
+                                                            rel="noopener noreferrer"
                                                             style="color: #758e96;">${assignmentMatch[1].trim()}</a>
                 </h5>` : "";
 

@@ -54,7 +54,7 @@ export async function email() {
                 </div>
                 <h2>To Do:</h2>
                 ${user["content"]}
-                <h6>Visit the website: <a href="${href}" target="_blank" style="color: #758e96;">${href}</a></h6>
+                <h6>Visit the website: <a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #758e96;">${href}</a></h6>
             </div>
         `
     }));

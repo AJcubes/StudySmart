@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/src/css/styles.css">
 </head>
 <body>
-<a id="title" href="https://github.com/AJcubes/StudySmart" target="_blank">
+<a id="title" href="https://github.com/AJcubes/StudySmart" target="_blank" rel="noopener noreferrer">
     <img src="/src/images/favicon.png" alt="Logo">
     <h1>StudySmart</h1>
 </a>
@@ -26,8 +26,8 @@
             <span id="email-value"></span>
         </div>
         <div>
-            <label for="calendar-url">Toddle Calendar URL <span id="brackets">(follow the <a href="/src/videos/tutorial.mp4" target="_blank">tutorial</a> <i>first</i>)</span>: </label>
-            <input id="calendar-url" name="calendar-url" placeholder="Toddle Calendar URL"  type="url" autocomplete="url" required>
+            <label for="calendar-url">Toddle Calendar URL <span id="brackets">(follow the <a href="/src/videos/tutorial.mp4" target="_blank" rel="noopener noreferrer">tutorial</a> <i>first</i>)</span>: </label>
+            <input id="calendar-url" name="calendar-url" placeholder="Toddle Calendar URL"  type="url" pattern="https://ap-east-1-production-apis\.toddleapp\.com/calendar/v1/feed/basic\.ics.*" autocomplete="url" required>
         </div>
         <div>
             <label for="receive-emails">Receive Reminder Emails: </label>

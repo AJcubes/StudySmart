@@ -45,6 +45,15 @@ authForm.addEventListener("submit", async function (event) {
     await showDashboard();
 });
 
+// Change error messages for calendar URL input
+calendarURL.addEventListener("invalid", function(event) {
+    event.target.setCustomValidity("Please follow the tutorial!");
+});
+
+calendarURL.addEventListener("input", function(event) {
+    event.target.setCustomValidity("");
+})
+
 // Update form listener. It listens to the update-details form in the dashboard to set new calendar URLs and their
 // choice to receive emails or not.
 updateDetails.addEventListener("submit", async function (event) {
