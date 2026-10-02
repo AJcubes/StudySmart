@@ -38,6 +38,11 @@ form div {
     margin-bottom: 20px;
 }
 
+/* Bolder brackets styling */
+#brackets {
+    font-weight: bolder;
+}
+
 /* Label styling */
 label {
     font-weight: bold;
